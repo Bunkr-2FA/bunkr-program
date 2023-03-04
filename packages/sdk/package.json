@@ -1,0 +1,19 @@
+{
+  "name": "sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@metaplex-foundation/beet": "^0.7.1",
+    "@metaplex-foundation/beet-solana": "^0.4.0",
+    "@metaplex-foundation/cusper": "^0.0.2",
+    "@solana/spl-token": "^0.3.7",
+    "@solana/web3.js": "^1.73.3"
+  }
+}
