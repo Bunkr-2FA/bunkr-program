@@ -18,7 +18,7 @@ pub mod vault_program {
         let data = init_bunkr_data;
         bunkr.name = data.name;
         bunkr.withdraw_address = ctx.accounts.signer.key();
-        bunkr.init_time = data.init_time;
+        bunkr.init_time = data.init_time ;
         bunkr.last_accessed = data.init_time;
         bunkr.root = data.root;
         bunkr.current_hash = data.initial_hash;
@@ -30,6 +30,10 @@ pub mod vault_program {
         Ok(())
     }
 
+    pub fn close_bunkr(ctx: Context<CloseBunkr>) -> Result<()> {
+        Ok(())
+    }
+
     pub fn test_withdraw(ctx: Context<TestWithdraw>,password_hash: Vec<u8>, otp_hash: Vec<u8>, proof_path: Vec<HashTuple> ) -> Result<()> {
         let bunkr = &mut ctx.accounts.bunkr;
         let root = bunkr.root;
@@ -37,7 +41,7 @@ pub mod vault_program {
         validate_time(bunkr.last_accessed, &current_time)?;
         validate_root(bunkr.init_time, &current_time, root.to_vec(), proof_path, otp_hash)?;
         validate_password(bunkr.current_hash, &password_hash)?;
-        bunkr.last_accessed = current_time as u64;
+        bunkr.last_accessed = current_time as u32;
         bunkr.current_hash = password_hash.as_slice().try_into().unwrap();
         msg!("Withdrawal successful");
 
@@ -206,17 +210,21 @@ pub mod vault_program {
 }
 
 
-fn validate_root(init_time: u64, current_time: &i64, root: Vec<u8>, proof_path: Vec<HashTuple>, hash: Vec<u8>) -> Result<()> {
+fn validate_root(init_time: u32, current_time: &i64, root: Vec<u8>, proof_path: Vec<HashTuple>, hash: Vec<u8>) -> Result<()> {
     assert!(root.len() == 32, "Root must be 32 bytes");
     assert!(hash.len() == 32, "Hash must be 32 bytes");
     assert!(proof_path.len() == 20, "Proof path must be 32 hashes");
     for hash_tuple in proof_path.iter() {
         assert!(hash_tuple.hash.len() == 32, "Hash must be 32 bytes");
     }
+
+
     let root = Hash::new_from_array(root.try_into().unwrap());
     let hash: Hash = anchor_lang::solana_program::hash::Hash::new_from_array(hash.try_into().unwrap());
     let time_interval = (current_time - init_time as i64) / 30;
-    let extended_hashes: [Hash; 2] = [anchor_lang::solana_program::hash::extend_and_hash(&hash, &time_interval.to_le_bytes()), anchor_lang::solana_program::hash::extend_and_hash(&hash, &(time_interval + 1).to_le_bytes())];
+    msg!("Time Interval: {}", time_interval.to_string());
+    let extended_hashes: [Hash; 2] = [anchor_lang::solana_program::hash::extend_and_hash(&hash, &time_interval.to_string().as_bytes()), anchor_lang::solana_program::hash::extend_and_hash(&hash, &(time_interval - 1).to_string().as_bytes())];
+    msg!("Extended Hashes: {:?}", extended_hashes);
     let mut calculated_roots: Vec<Hash> = vec![];
 
     for hash in extended_hashes {
@@ -235,16 +243,17 @@ fn validate_root(init_time: u64, current_time: &i64, root: Vec<u8>, proof_path: 
                     panic!("Invalid Sibling Index")
                 }
             }
-            calculated_roots.push(calculated_hash);
         }
+        calculated_roots.push(calculated_hash);
     }
+    msg!("Calculated Roots: {:?}", calculated_roots);
 
     assert!(calculated_roots.contains(&root), "Root Mismatch");
 
     Ok(())
 }
 
-fn validate_time(last_accessed: u64, current_time: &i64) -> Result<()> {
+fn validate_time(last_accessed: u32, current_time: &i64) -> Result<()> {
     assert!(current_time - last_accessed as i64 > 30, "Account has been accessed in the last 30 seconds");
     Ok(())
 }
@@ -262,12 +271,22 @@ fn validate_password(on_chain_password: [u8; 32], password: &Vec<u8>) -> Result<
 
 #[derive(Accounts)]
 pub struct InitBunkr<'info> {
-    #[account(init, seeds=[b"bunkr", signer.key().as_ref()], bump , payer=signer, space = 100)]
+    #[account(init, seeds=[b"bunkr", signer.key().as_ref()], bump , payer=signer, space = 300)]
     pub bunkr: Account<'info,Bunkr>,
     #[account(mut)]
     pub signer: Signer<'info>,
     pub system_program: Program<'info, System>
 }
+
+#[derive(Accounts)]
+pub struct CloseBunkr<'info> {
+    #[account(mut, close = signer, seeds=[b"bunkr", signer.key().as_ref()], bump)]
+    pub bunkr: Account<'info,Bunkr>,
+    #[account(mut)]
+    pub signer: Signer<'info>,
+    pub system_program: Program<'info, System>
+}
+
 
 #[derive(Accounts)]
 pub struct TestWithdraw<'info> {
@@ -400,8 +419,8 @@ pub struct HashTest<'info> {
 pub struct Bunkr {
     pub name: String,
     pub withdraw_address: Pubkey,
-    pub init_time: u64,
-    pub last_accessed: u64,
+    pub init_time: u32,
+    pub last_accessed: u32,
     pub root: [u8; 32],
     pub current_hash: [u8; 32],
     pub final_hash: [u8; 32],
@@ -410,23 +429,21 @@ pub struct Bunkr {
     pub shadow_drive_space: String
 }
 
-
-
-
-#[derive(AnchorSerialize, AnchorDeserialize)]
-pub struct HashTuple {
-    pub hash: [u8; 32],
-    pub sibling_index: u8
-}
-
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct InitBunkrData {
     pub name: String,
-    pub init_time: u64,
+    pub init_time: u32,
     pub root: [u8; 32],
     pub initial_hash: [u8; 32],
     pub final_hash: [u8; 32],
     pub initial_reset_hash: [u8; 32],
     pub final_reset_hash: [u8; 32],
     pub shadow_drive_space: String
+}
+
+
+#[derive(AnchorSerialize, AnchorDeserialize)]
+pub struct HashTuple {
+    pub hash: [u8; 32],
+    pub sibling_index: u8
 }

@@ -8,7 +8,7 @@
 import * as beet from '@metaplex-foundation/beet'
 export type InitBunkrData = {
   name: string
-  initTime: beet.bignum
+  initTime: number
   root: number[] /* size: 32 */
   initialHash: number[] /* size: 32 */
   finalHash: number[] /* size: 32 */
@@ -24,7 +24,7 @@ export type InitBunkrData = {
 export const initBunkrDataBeet = new beet.FixableBeetArgsStruct<InitBunkrData>(
   [
     ['name', beet.utf8String],
-    ['initTime', beet.u64],
+    ['initTime', beet.u32],
     ['root', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['initialHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['finalHash', beet.uniformFixedSizeArray(beet.u8, 32)],

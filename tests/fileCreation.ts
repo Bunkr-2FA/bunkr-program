@@ -19,19 +19,22 @@ function generateTotpSecret(): string {
 
 function generateOtps(secret: string, amount: number): { leafHashes: Buffer[], initTime: number } {
     const initRealTime = Date.now()
-    const initTime = Math.floor(initRealTime / 60000) * 60000;
+    const initTime = Math.floor(initRealTime / 30000) * 30000;
     const leafHashes: Buffer[] = [];
     for (let i = 0; i < amount; i++) {
         const Otp = totp(secret, {
-            period: 60,
-            timestamp: initTime + i * 60000,
+            period: 30,
+            timestamp: initTime + i * 30000,
         })
         const hash = createHash("sha256").update(Otp).digest();
         const extendedHash = createHash("sha256").update(Buffer.concat([hash, Buffer.from(i.toString())])).digest();
 
         leafHashes.push(extendedHash);
     }
-    return { leafHashes, initTime }
+    const returnInitTime = initTime / 1000;
+    return {
+        leafHashes, initTime: initTime / 1000
+    }
 }
 
 
@@ -54,7 +57,7 @@ export function createMerkleTree(leafValues: Buffer[]): MerkleTree {
 
 }
 
-function createMerkleProofPath(tree: MerkleTree, index: number, leafValues: Buffer[]): HashTuple[] {
+export function createMerkleProofPath(tree: MerkleTree, index: number, leafValues: Buffer[]): HashTuple[] {
     const leafindex = leafValues[index];
     const proof = tree.getProof(leafindex);
 
@@ -83,7 +86,7 @@ function createMerkleProofPath(tree: MerkleTree, index: number, leafValues: Buff
 function generateQrLink(secret: string, securityChars: string, pubkey: string): string {
     const pubkeyShort = "Wallet%3A%20" + pubkey.slice(0, 3) + "..." + pubkey.slice(-3);
     const securityCharsEncoded = encodeURIComponent(securityChars);
-    const link = "otpauth://totp/" + pubkeyShort + "?secret=" + secret + "&issuer=Bunkr%20%7C%20" + securityChars + "&algorithm=SHA1&digits=6&period=60";
+    const link = "otpauth://totp/" + pubkeyShort + "?secret=" + secret + "&issuer=Bunkr%20%7C%20" + securityChars + "&algorithm=SHA1&digits=6&period=30";
     return link;
 }
 
@@ -95,12 +98,12 @@ export function createHashChain(input: string, amount: number): Buffer {
     return hash;
 }
 
-export function calculatePreImage(hash_image: Buffer, input: string, max_attempts: number) {
+export function calculatePreImage(hash_image: Buffer, input: string, max_attempts: number): { hash: Buffer, attempts: number } {
     let hash = createHash("sha256").update(Buffer.from(input)).digest()
     for (let i = 0; i < max_attempts; i++) {
         const new_hash = createHash("sha256").update(hash).digest()
         if (new_hash.equals(hash_image)) {
-            return hash;
+            return { hash: hash, attempts: i };
         }
         hash = new_hash;
     }
@@ -131,15 +134,14 @@ export function decryptLeaves(signedMessage: string, data: Buffer): Buffer[] {
     return leaves
 }
 
-function writeFileData(filePath: string, data: Buffer) {
+export function writeFileData(filePath: string, data: Buffer) {
     fs.writeFile(filePath, data, (err) => {
         if (err) throw err
         else console.log("File written successfully\n");
-        console.log(err)
     });
 }
 
-function readfileData(filePath: string): Buffer {
+export function readfileData(filePath: string): Buffer {
     const data = fs.readFileSync(filePath)
     return data;
 }
@@ -183,9 +185,3 @@ function readfileData(filePath: string): Buffer {
 // console.log("Re-created Root: ", recreatedTree.getRoot().toString("hex"));
 // endTime = Date.now() / 1000;
 // console.log(`Time to re-generate Merkle Tree: ${endTime - startTime}s`)
-
-const hash = createHashChain("hello", Math.pow(2, 20));
-console.log("Hash: ", hash.toString("hex"));
-
-const preImage = calculatePreImage(hash, "hell", Math.pow(2, 20));
-console.log("Preimage: ", preImage.toString("hex"));

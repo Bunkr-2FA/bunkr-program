@@ -4,6 +4,9 @@ skip-lint = false
 [programs.localnet]
 vault_program = "3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL"
 
+[programs.devnet]
+vault_program = "3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL"
+
 [registry]
 url = "https://api.apr.dev"
 

@@ -17,8 +17,8 @@ import * as beetSolana from '@metaplex-foundation/beet-solana'
 export type BunkrArgs = {
   name: string
   withdrawAddress: web3.PublicKey
-  initTime: beet.bignum
-  lastAccessed: beet.bignum
+  initTime: number
+  lastAccessed: number
   root: number[] /* size: 32 */
   currentHash: number[] /* size: 32 */
   finalHash: number[] /* size: 32 */
@@ -39,8 +39,8 @@ export class Bunkr implements BunkrArgs {
   private constructor(
     readonly name: string,
     readonly withdrawAddress: web3.PublicKey,
-    readonly initTime: beet.bignum,
-    readonly lastAccessed: beet.bignum,
+    readonly initTime: number,
+    readonly lastAccessed: number,
     readonly root: number[] /* size: 32 */,
     readonly currentHash: number[] /* size: 32 */,
     readonly finalHash: number[] /* size: 32 */,
@@ -172,28 +172,8 @@ export class Bunkr implements BunkrArgs {
     return {
       name: this.name,
       withdrawAddress: this.withdrawAddress.toBase58(),
-      initTime: (() => {
-        const x = <{ toNumber: () => number }>this.initTime
-        if (typeof x.toNumber === 'function') {
-          try {
-            return x.toNumber()
-          } catch (_) {
-            return x
-          }
-        }
-        return x
-      })(),
-      lastAccessed: (() => {
-        const x = <{ toNumber: () => number }>this.lastAccessed
-        if (typeof x.toNumber === 'function') {
-          try {
-            return x.toNumber()
-          } catch (_) {
-            return x
-          }
-        }
-        return x
-      })(),
+      initTime: this.initTime,
+      lastAccessed: this.lastAccessed,
       root: this.root,
       currentHash: this.currentHash,
       finalHash: this.finalHash,
@@ -218,8 +198,8 @@ export const bunkrBeet = new beet.FixableBeetStruct<
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['name', beet.utf8String],
     ['withdrawAddress', beetSolana.publicKey],
-    ['initTime', beet.u64],
-    ['lastAccessed', beet.u64],
+    ['initTime', beet.u32],
+    ['lastAccessed', beet.u32],
     ['root', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['currentHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['finalHash', beet.uniformFixedSizeArray(beet.u8, 32)],
