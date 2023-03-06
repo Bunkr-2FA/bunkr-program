@@ -336,7 +336,7 @@ describe("vault-program", () => {
     const root = tree.getRoot();
     console.log("🚀 ~ file: vault-program.ts:333 ~ it ~ root:", root.toString("hex"));
     const onchainRoot = accountData.root;
-    let code = "585613";
+    let code = "695483";
     console.log("🚀 ~ file: vault-program.ts:339 ~ it ~ integer:", integer)
     const proof = createMerkleProofPath(tree, integer, leaves)
     const otpHash = createHash("sha256").update(Buffer.from(code)).digest();

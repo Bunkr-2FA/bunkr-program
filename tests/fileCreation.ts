@@ -9,6 +9,13 @@ import totp from "totp-generator"
 import fs from "fs";
 
 
+function checkTotp(secret: string, otp: string): boolean {
+    const Otp = totp(secret, {
+        period: 30,
+        timestamp: Date.now(),
+    })
+    return Otp === otp;
+}
 
 function generateTotpSecret(): string {
     const randomBytes = crypto.randomBytes(20);
