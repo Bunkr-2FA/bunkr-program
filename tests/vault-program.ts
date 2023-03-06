@@ -11,7 +11,7 @@ import { assert } from "chai";
 import { USDC_TOKEN_ACCOUNT, USDC_TOKEN_MINT } from "./constants";
 import { createHash } from "crypto";
 import { SHA256 } from "crypto-js"
-import { HashTuple, hashTupleBeet, InitBunkrData } from "../src/generated";
+import { AuthenticationObject, HashTuple, hashTupleBeet, InitBunkrData } from "../src/generated";
 import { BigNumber } from "big-number";
 import {
   ComputeBudgetProgram,
@@ -336,7 +336,7 @@ describe("vault-program", () => {
     const root = tree.getRoot();
     console.log("🚀 ~ file: vault-program.ts:333 ~ it ~ root:", root.toString("hex"));
     const onchainRoot = accountData.root;
-    let code = "695483";
+    let code = "416253";
     console.log("🚀 ~ file: vault-program.ts:339 ~ it ~ integer:", integer)
     const proof = createMerkleProofPath(tree, integer, leaves)
     const otpHash = createHash("sha256").update(Buffer.from(code)).digest();
@@ -344,8 +344,13 @@ describe("vault-program", () => {
     console.log("🚀 ~ file: vault-program.ts:342 ~ it ~ leaf:", leaf.toString('hex'))
     const { hash, attempts } = calculatePreImage(Buffer.from(hashImage), "PASSWORD", Math.pow(2, 20));
     console.log("🚀 ~ file: vault-program.ts:346 ~ it ~ attempts:", attempts)
+    const authObject: AuthenticationObject = {
+      passwordHash: [...hash],
+      otpHash: [...otpHash],
+      proofPath: proof,
+    }
 
-    const tx = await program.methods.testWithdraw(hash, otpHash, proof)
+    const tx = await program.methods.testWithdraw(authObject)
       .accounts({
         bunkr: bunkrAccount,
       }

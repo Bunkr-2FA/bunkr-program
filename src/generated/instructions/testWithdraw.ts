@@ -7,7 +7,10 @@
 
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import { HashTuple, hashTupleBeet } from '../types/HashTuple'
+import {
+  AuthenticationObject,
+  authenticationObjectBeet,
+} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
@@ -15,9 +18,7 @@ import { HashTuple, hashTupleBeet } from '../types/HashTuple'
  * @category generated
  */
 export type TestWithdrawInstructionArgs = {
-  passwordHash: Uint8Array
-  otpHash: Uint8Array
-  proofPath: HashTuple[]
+  authenticationObject: AuthenticationObject
 }
 /**
  * @category Instructions
@@ -31,9 +32,7 @@ export const testWithdrawStruct = new beet.FixableBeetArgsStruct<
 >(
   [
     ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['passwordHash', beet.bytes],
-    ['otpHash', beet.bytes],
-    ['proofPath', beet.array(hashTupleBeet)],
+    ['authenticationObject', authenticationObjectBeet],
   ],
   'TestWithdrawInstructionArgs'
 )

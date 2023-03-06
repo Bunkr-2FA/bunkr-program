@@ -1,6 +1,5 @@
+export * from './closeBunkr'
 export * from './freezeNonFungible'
-export * from './hashExtendTest'
-export * from './hashTest'
 export * from './initBunkr'
 export * from './lockFungible'
 export * from './testWithdraw'
