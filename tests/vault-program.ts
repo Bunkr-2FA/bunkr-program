@@ -271,59 +271,11 @@ describe("vault-program", () => {
   //   console.log("Time: ", Date.now() / 1000);
   // });
 
-  // it("Initialize Bunkr Account", async () => {
-  //   const { link, otps, initTime } = generateTotpObject(Math.pow(2, 20));
-  //   console.log("🚀 ~ file: vault-program.ts:182 ~ it ~ link:", link)
-  //   const tree = new MerkleTree(otps, SHA256)
-  //   const root = tree.getRoot();
-  //   const passwordHash = createHashChain("PASSWORD", Math.pow(2, 20));
-  //   const finalPasswordHash = createHash("sha256").update(Buffer.concat([createHash("sha256").update(Buffer.from("PASSWORD")).digest(), Buffer.from("FINAL")])).digest();
-  //   const resetHash = createHashChain("RESETPASSWORD", Math.pow(2, 20));
-  //   const finalResetHash = createHash("sha256").update(Buffer.concat([createHash("sha256").update(Buffer.from("RESETPASSWORD")).digest(), Buffer.from("FINAL")])).digest();
 
-  //   const initBunkrData: InitBunkrData = {
-  //     name: "Test Bunkr",
-  //     initTime: initTime,
-  //     root: [...root],
-  //     initialHash: [...passwordHash],
-  //     finalHash: [...finalPasswordHash],
-  //     initialResetHash: [...resetHash],
-  //     finalResetHash: [...finalResetHash],
-  //     shadowDriveSpace: "test.bin"
-  //   }
-
-  //   writeFileData("test.bin", Buffer.concat(otps));
-
-  //   const bunkrAccount = findProgramAddressSync([Buffer.from("bunkr"), wallet.payer.publicKey.toBuffer()], program.programId)[0]
-  //   const tx = await program.methods.initBunkr(initBunkrData)
-  //     .accounts({
-  //       bunkr: bunkrAccount,
-  //     })
-  //     .signers([wallet.payer])
-  //     .rpc()
-  //     .catch(console.log);
-
-  //   // const tx = await program.methods.closeBunkr()
-  //   //   .accounts({
-  //   //     bunkr: bunkrAccount,
-  //   //   })
-  //   //   .signers([wallet.payer])
-  //   //   .rpc()
-  //   //   .catch(console.log);
-
-
-  //   console.log("Your transaction signature", tx);
-
-  //   const data = await program.account.bunkr.fetch(bunkrAccount);
-  //   console.log("🚀 ~ file: vault-program.ts:307 ~ it ~ data:", data)
-
-
-
-  // });
 
   it("Check current Bunkr", async () => {
     const bunkrAccount = findProgramAddressSync([Buffer.from("bunkr"), wallet.payer.publicKey.toBuffer()], program.programId)[0]
-    const accountData = await program.account.bunkr.fetch(bunkrAccount);
+    let accountData = await program.account.bunkr.fetch(bunkrAccount);
     const initTime = accountData.initTime;
     const hashImage = accountData.currentHash;
     const integer = Math.floor(((Date.now() / 1000) - initTime) / 30);
@@ -336,7 +288,7 @@ describe("vault-program", () => {
     const root = tree.getRoot();
     console.log("🚀 ~ file: vault-program.ts:333 ~ it ~ root:", root.toString("hex"));
     const onchainRoot = accountData.root;
-    let code = "416253";
+    let code = "157204";
     console.log("🚀 ~ file: vault-program.ts:339 ~ it ~ integer:", integer)
     const proof = createMerkleProofPath(tree, integer, leaves)
     const otpHash = createHash("sha256").update(Buffer.from(code)).digest();
@@ -360,5 +312,8 @@ describe("vault-program", () => {
       .catch(console.log);
 
     console.log("Your transaction signature", tx);
+
+    accountData = await program.account.bunkr.fetch(bunkrAccount);
+    console.log("🚀 ~ file: vault-program.ts:307 ~ it ~ data:", accountData)
   });
 });

@@ -9,8 +9,8 @@ export async function checkBunkrExistence(userPubkey: web3.PublicKey, programID:
     if (accountInfo === null) {
         return false;
     }
-    const space = Bunkr.deserialize(accountInfo.data)[0].shadowDriveSpace;
-    return space;
+    const bunkrObject = Bunkr.deserialize(accountInfo.data)[0];
+    return bunkrObject;
 }
 
 const connection = new web3.Connection("https://api.devnet.solana.com");

@@ -11,8 +11,12 @@ vault_program = "3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "/Users/orion/Documents/GitHub/vault-program/vault_upgrade_authority"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+close-bunkr = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests-individual/**/close-bunkr.ts"
+init-bunkr = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests-individual/**/init-bunkr.ts"
+change-root = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests-individual/**/change-root.ts"
+confirm-root = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests-individual/**/confirm-root.ts"

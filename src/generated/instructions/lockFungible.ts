@@ -40,7 +40,7 @@ export const lockFungibleStruct = new beet.BeetArgsStruct<
  * @property [] tokenMint
  * @property [_writable_] toAssociatedTokenAccount
  * @property [_writable_, **signer**] signer
- * @property [_writable_] vault
+ * @property [_writable_] bunkr
  * @property [] associatedTokenProgram
  * @category Instructions
  * @category LockFungible
@@ -51,7 +51,7 @@ export type LockFungibleInstructionAccounts = {
   tokenMint: web3.PublicKey
   toAssociatedTokenAccount: web3.PublicKey
   signer: web3.PublicKey
-  vault: web3.PublicKey
+  bunkr: web3.PublicKey
   tokenProgram?: web3.PublicKey
   rent?: web3.PublicKey
   systemProgram?: web3.PublicKey
@@ -104,7 +104,7 @@ export function createLockFungibleInstruction(
       isSigner: true,
     },
     {
-      pubkey: accounts.vault,
+      pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
     },

@@ -7,27 +7,28 @@ use {
 
 
 #[derive(Accounts)]
+#[instruction(amount: u64)]
 pub struct LockFungible<'info> {
     #[account(
         mut, 
         associated_token::mint = token_mint, 
         associated_token::authority = signer
     )]
-    from_associated_token_account: Account<'info, TokenAccount>,
-    token_mint: Account<'info, Mint>,
+    pub from_associated_token_account: Account<'info, TokenAccount>,
+    pub token_mint: Account<'info, Mint>,
     #[account(
         init_if_needed,
         associated_token::mint = token_mint,
-        associated_token::authority = vault,
+        associated_token::authority = bunkr,
         payer = signer
     )]
-    to_associated_token_account: Account<'info, TokenAccount>,
+    pub to_associated_token_account: Account<'info, TokenAccount>,
     /// CHECK instruction will fail if wrong edition is supplied
     #[account(mut)]
-    signer: Signer<'info>,
+    pub signer: Signer<'info>,
 
-    #[account(mut, seeds=[b"testvault", signer.key().as_ref()], bump)]
-    vault: Account<'info, Bunkr>,
+    #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
+    pub bunkr: Account<'info, Bunkr>,
 
     token_program: Program<'info, Token>,
     rent: Sysvar<'info, Rent>,

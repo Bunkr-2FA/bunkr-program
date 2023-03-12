@@ -27,7 +27,7 @@ export const freezeNonFungibleStruct = new beet.BeetArgsStruct<{
  * @property [] tokenMint
  * @property [] tokenMintEdition
  * @property [_writable_, **signer**] signer
- * @property [_writable_] delegate
+ * @property [_writable_] bunkr
  * @property [] tokenMetadataProgram
  * @category Instructions
  * @category FreezeNonFungible
@@ -38,7 +38,7 @@ export type FreezeNonFungibleInstructionAccounts = {
   tokenMint: web3.PublicKey
   tokenMintEdition: web3.PublicKey
   signer: web3.PublicKey
-  delegate: web3.PublicKey
+  bunkr: web3.PublicKey
   tokenProgram?: web3.PublicKey
   tokenMetadataProgram: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
@@ -85,7 +85,7 @@ export function createFreezeNonFungibleInstruction(
       isSigner: true,
     },
     {
-      pubkey: accounts.delegate,
+      pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
     },

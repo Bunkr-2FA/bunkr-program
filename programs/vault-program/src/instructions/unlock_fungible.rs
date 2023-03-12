@@ -11,22 +11,27 @@ pub struct UnlockFungible<'info> {
     #[account(
         mut, 
         associated_token::mint = token_mint, 
-        associated_token::authority = vault
+        associated_token::authority = bunkr
     )]
-    from_associated_token_account: Account<'info, TokenAccount>,
-    token_mint: Account<'info, Mint>,
+    pub from_associated_token_account: Account<'info, TokenAccount>,
+    pub token_mint: Account<'info, Mint>,
+
     #[account(
         init_if_needed,
         associated_token::mint = token_mint,
-        associated_token::authority = signer,
+        associated_token::authority = withdrawal_address,
         payer = signer
     )]
-    to_associated_token_account: Account<'info, TokenAccount>,
+
+    pub to_associated_token_account: Account<'info, TokenAccount>,
+    
+    #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
+    pub withdrawal_address: SystemAccount<'info>,
     #[account(mut)]
     signer: Signer<'info>,
 
-    #[account(mut, seeds=[b"testvault", signer.key().as_ref()], bump)]
-    vault: Account<'info, Bunkr>,
+    #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
+    pub bunkr: Account<'info, Bunkr>,
 
     token_program: Program<'info, Token>,
     rent: Sysvar<'info, Rent>,
@@ -42,7 +47,7 @@ pub fn handler(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
     let cpi_accounts = Transfer {
         from: ctx.accounts.from_associated_token_account.to_account_info(),
         to: ctx.accounts.to_associated_token_account.to_account_info(),
-        authority: ctx.accounts.vault.to_account_info(),
+        authority: ctx.accounts.bunkr.to_account_info(),
     };
     
     let signer = ctx.accounts.signer.key();

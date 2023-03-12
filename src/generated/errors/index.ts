@@ -12,89 +12,24 @@ const createErrorFromCodeLookup: Map<number, () => ErrorWithCode> = new Map()
 const createErrorFromNameLookup: Map<string, () => ErrorWithCode> = new Map()
 
 /**
- * TwitterHandleTooLong: 'The Twitter handle is too long. The maximum length is 15 characters.'
+ * NameTooLong: 'Name too long'
  *
  * @category Errors
  * @category generated
  */
-export class TwitterHandleTooLongError extends Error {
+export class NameTooLongError extends Error {
   readonly code: number = 0x1770
-  readonly name: string = 'TwitterHandleTooLong'
+  readonly name: string = 'NameTooLong'
   constructor() {
-    super(
-      'The Twitter handle is too long. The maximum length is 15 characters.'
-    )
+    super('Name too long')
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, TwitterHandleTooLongError)
+      Error.captureStackTrace(this, NameTooLongError)
     }
   }
 }
 
-createErrorFromCodeLookup.set(0x1770, () => new TwitterHandleTooLongError())
-createErrorFromNameLookup.set(
-  'TwitterHandleTooLong',
-  () => new TwitterHandleTooLongError()
-)
-
-/**
- * Unauthorized: 'You are not authorized to perform this action.'
- *
- * @category Errors
- * @category generated
- */
-export class UnauthorizedError extends Error {
-  readonly code: number = 0x1771
-  readonly name: string = 'Unauthorized'
-  constructor() {
-    super('You are not authorized to perform this action.')
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, UnauthorizedError)
-    }
-  }
-}
-
-createErrorFromCodeLookup.set(0x1771, () => new UnauthorizedError())
-createErrorFromNameLookup.set('Unauthorized', () => new UnauthorizedError())
-
-/**
- * TitleTooLong: 'The title is too long. The maximum length is 32 characters.'
- *
- * @category Errors
- * @category generated
- */
-export class TitleTooLongError extends Error {
-  readonly code: number = 0x1772
-  readonly name: string = 'TitleTooLong'
-  constructor() {
-    super('The title is too long. The maximum length is 32 characters.')
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, TitleTooLongError)
-    }
-  }
-}
-
-createErrorFromCodeLookup.set(0x1772, () => new TitleTooLongError())
-createErrorFromNameLookup.set('TitleTooLong', () => new TitleTooLongError())
-
-/**
- * ContentTooLong: 'The content is too long. The maximum length is 3000 characters.'
- *
- * @category Errors
- * @category generated
- */
-export class ContentTooLongError extends Error {
-  readonly code: number = 0x1773
-  readonly name: string = 'ContentTooLong'
-  constructor() {
-    super('The content is too long. The maximum length is 3000 characters.')
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, ContentTooLongError)
-    }
-  }
-}
-
-createErrorFromCodeLookup.set(0x1773, () => new ContentTooLongError())
-createErrorFromNameLookup.set('ContentTooLong', () => new ContentTooLongError())
+createErrorFromCodeLookup.set(0x1770, () => new NameTooLongError())
+createErrorFromNameLookup.set('NameTooLong', () => new NameTooLongError())
 
 /**
  * Attempts to resolve a custom program error from the provided error code.

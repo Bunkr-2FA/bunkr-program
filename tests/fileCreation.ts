@@ -9,6 +9,9 @@ import totp from "totp-generator"
 import fs from "fs";
 
 
+const charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+={}[]|:;\"'<>,.?/~`"
+
+
 function checkTotp(secret: string, otp: string): boolean {
     const Otp = totp(secret, {
         period: 30,
@@ -152,6 +155,48 @@ export function readfileData(filePath: string): Buffer {
     const data = fs.readFileSync(filePath)
     return data;
 }
+
+
+function generateCombinations(characters, n) {
+    // Create an array to store the combinations
+    const result = [];
+
+    // Recursively generate combinations
+    function generateCombos(currentCombo) {
+        // Base case: If the current combination is of length n, add it to the result array
+        if (currentCombo.length === n) {
+            result.push(currentCombo);
+            return;
+        }
+        // Recursive case: For each character in the character set, generate combinations with that character added to the current combination
+        for (let i = 0; i < characters.length; i++) {
+            generateCombos(currentCombo + characters[i]);
+        }
+    }
+    // Start generating combinations with an empty string
+    generateCombos('');
+    return result;
+}
+
+export function crackLastCharacters(code: string, index: number, hashImage: Buffer, charSet: string, length: number): string {
+    const combinations = generateCombinations(charSet, length);
+    for (const combination of combinations) {
+        const extendedHash = crypto.createHash("sha256").update(Buffer.from(code + combination)).digest()
+        const hash = crypto.createHash("sha256").update(Buffer.concat([extendedHash, Buffer.from(index.toString())])).digest()
+        if (hash.equals(hashImage)) {
+            return combination;
+        }
+    }
+    throw new Error("Could not find combination");
+}
+
+// const randomChars = "Hf/"
+// const baseHash = crypto.createHash("sha256").update(Buffer.from("hello" + randomChars)).digest()
+// const index = 19;
+// const hashImage = crypto.createHash("sha256").update(Buffer.concat([baseHash, Buffer.from(index.toString())])).digest()
+// console.log(crackLastCharacters("hello", index, hashImage, charSet, 3))
+
+
 
 // const secret = generateTotpSecret()
 // console.log("Link", generateQrLink(secret, "A7EF", "A6bh5tngHgeXFbXopuqV2TcWPm7fyUA7RSU2yBPfZ4jN"));

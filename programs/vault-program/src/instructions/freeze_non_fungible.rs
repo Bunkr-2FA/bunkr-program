@@ -14,15 +14,15 @@ pub struct FreezeNonFungible<'info> {
         token::mint = token_mint, 
         token::authority = signer
     )]
-    token_account: Account<'info, TokenAccount>,
-    token_mint: Account<'info, Mint>,
+    pub token_account: Account<'info, TokenAccount>,
+    pub token_mint: Account<'info, Mint>,
     /// CHECK instruction will fail if wrong edition is supplied
-    token_mint_edition: AccountInfo<'info>,
+    pub token_mint_edition: AccountInfo<'info>,
     #[account(mut)]
-    signer: Signer<'info>,
+    pub signer: Signer<'info>,
 
-    #[account(mut, seeds=[b"testvault", signer.key().as_ref()], bump)]
-    delegate: Account<'info, Bunkr>,
+    #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
+    pub bunkr: Account<'info, Bunkr>,
 
     token_program: Program<'info, Token>,
     /// CHECK intstruction will fail if wrong program is supplied
@@ -40,7 +40,7 @@ pub fn handler(ctx: Context<FreezeNonFungible>) -> Result<()> {
     let cpi_accounts = Approve{
         to: ctx.accounts.token_account.to_account_info(),
         authority: ctx.accounts.signer.to_account_info(),
-        delegate: ctx.accounts.delegate.to_account_info()
+        delegate: ctx.accounts.bunkr.to_account_info()
     };
     let cpi_program = ctx.accounts.token_program.to_account_info();
     let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
@@ -58,14 +58,14 @@ pub fn handler(ctx: Context<FreezeNonFungible>) -> Result<()> {
     invoke_signed(
     &freeze_delegated_account(
         mpl_token_metadata::id(),
-        ctx.accounts.delegate.key(),
+        ctx.accounts.bunkr.key(),
         ctx.accounts.token_account.key(),
         ctx.accounts.token_mint_edition.key(),
         ctx.accounts.token_mint.key()
     ), 
     &[
             ctx.accounts.signer.to_account_info(),
-            ctx.accounts.delegate.to_account_info(),
+            ctx.accounts.bunkr.to_account_info(),
             ctx.accounts
                 .token_account
                 .to_account_info(),

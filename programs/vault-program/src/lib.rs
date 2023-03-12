@@ -16,6 +16,20 @@ pub mod vault_program {
         init_bunkr::handler(ctx, init_bunkr_data)
     }
 
+    pub fn change_withdrawal_address(ctx: Context<ChangeWithdrawalAddress>, authentication_object: AuthenticationObject) -> Result<()> {
+        let bunkr = &mut ctx.accounts.bunkr;
+        authentication::handler(bunkr, authentication_object)?;
+        change_withdrawal_address::handler(ctx)
+    }
+
+    pub fn reset_root(ctx: Context<ResetRoot>, reset_root_object: ResetRootObject) -> Result<()> {
+        reset_root::handler(ctx, reset_root_object)
+    }
+
+    pub fn confirm_root(ctx: Context<ConfirmRoot>, confirm_root_object: AuthenticationObject) -> Result<()> {
+        confirm_root::handler(ctx, confirm_root_object)
+    }
+
     pub fn close_bunkr(ctx: Context<CloseBunkr>) -> Result<()> {
         close_bunkr::handler(ctx)
     }
@@ -24,7 +38,9 @@ pub mod vault_program {
         freeze_non_fungible::handler(ctx)
     }
 
-    pub fn thaw_non_fungible(ctx: Context<ThawNonFungible>) -> Result<()> {
+    pub fn thaw_non_fungible(ctx: Context<ThawNonFungible>, authentication_object: AuthenticationObject) -> Result<()> {
+        let bunkr = &mut ctx.accounts.bunkr;
+        authentication::handler(bunkr, authentication_object)?;
         thaw_non_fungible::handler(ctx)
     }
 
@@ -32,7 +48,9 @@ pub mod vault_program {
         lock_fungible::handler(ctx, amount)
     }
 
-    pub fn unlock_fungible(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
+    pub fn unlock_fungible(ctx: Context<UnlockFungible>, amount: u64, authentication_object: AuthenticationObject) -> Result<()> {
+        let bunkr = &mut ctx.accounts.bunkr;
+        authentication::handler(bunkr, authentication_object)?;
         unlock_fungible::handler(ctx, amount)
     }
 

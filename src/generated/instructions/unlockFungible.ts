@@ -8,6 +8,10 @@
 import * as splToken from '@solana/spl-token'
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
+import {
+  AuthenticationObject,
+  authenticationObjectBeet,
+} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
@@ -16,13 +20,14 @@ import * as web3 from '@solana/web3.js'
  */
 export type UnlockFungibleInstructionArgs = {
   amount: beet.bignum
+  authenticationObject: AuthenticationObject
 }
 /**
  * @category Instructions
  * @category UnlockFungible
  * @category generated
  */
-export const unlockFungibleStruct = new beet.BeetArgsStruct<
+export const unlockFungibleStruct = new beet.FixableBeetArgsStruct<
   UnlockFungibleInstructionArgs & {
     instructionDiscriminator: number[] /* size: 8 */
   }
@@ -30,6 +35,7 @@ export const unlockFungibleStruct = new beet.BeetArgsStruct<
   [
     ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['amount', beet.u64],
+    ['authenticationObject', authenticationObjectBeet],
   ],
   'UnlockFungibleInstructionArgs'
 )
@@ -39,8 +45,9 @@ export const unlockFungibleStruct = new beet.BeetArgsStruct<
  * @property [_writable_] fromAssociatedTokenAccount
  * @property [] tokenMint
  * @property [_writable_] toAssociatedTokenAccount
+ * @property [] withdrawalAddress
  * @property [_writable_, **signer**] signer
- * @property [_writable_] vault
+ * @property [_writable_] bunkr
  * @property [] associatedTokenProgram
  * @category Instructions
  * @category UnlockFungible
@@ -50,8 +57,9 @@ export type UnlockFungibleInstructionAccounts = {
   fromAssociatedTokenAccount: web3.PublicKey
   tokenMint: web3.PublicKey
   toAssociatedTokenAccount: web3.PublicKey
+  withdrawalAddress: web3.PublicKey
   signer: web3.PublicKey
-  vault: web3.PublicKey
+  bunkr: web3.PublicKey
   tokenProgram?: web3.PublicKey
   rent?: web3.PublicKey
   systemProgram?: web3.PublicKey
@@ -99,12 +107,17 @@ export function createUnlockFungibleInstruction(
       isSigner: false,
     },
     {
+      pubkey: accounts.withdrawalAddress,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
       pubkey: accounts.signer,
       isWritable: true,
       isSigner: true,
     },
     {
-      pubkey: accounts.vault,
+      pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
     },

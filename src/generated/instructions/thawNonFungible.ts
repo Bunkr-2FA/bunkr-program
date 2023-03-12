@@ -8,16 +8,33 @@
 import * as splToken from '@solana/spl-token'
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
+import {
+  AuthenticationObject,
+  authenticationObjectBeet,
+} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
  * @category ThawNonFungible
  * @category generated
  */
-export const thawNonFungibleStruct = new beet.BeetArgsStruct<{
-  instructionDiscriminator: number[] /* size: 8 */
-}>(
-  [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
+export type ThawNonFungibleInstructionArgs = {
+  authenticationObject: AuthenticationObject
+}
+/**
+ * @category Instructions
+ * @category ThawNonFungible
+ * @category generated
+ */
+export const thawNonFungibleStruct = new beet.FixableBeetArgsStruct<
+  ThawNonFungibleInstructionArgs & {
+    instructionDiscriminator: number[] /* size: 8 */
+  }
+>(
+  [
+    ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
+    ['authenticationObject', authenticationObjectBeet],
+  ],
   'ThawNonFungibleInstructionArgs'
 )
 /**
@@ -26,9 +43,12 @@ export const thawNonFungibleStruct = new beet.BeetArgsStruct<{
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
  * @property [] tokenMintEdition
+ * @property [_writable_, **signer**] withdrawalTokenAccount
+ * @property [] withdrawalAddress
  * @property [_writable_, **signer**] signer
- * @property [_writable_] delegate
+ * @property [_writable_] bunkr
  * @property [] tokenMetadataProgram
+ * @property [] associatedTokenProgram
  * @category Instructions
  * @category ThawNonFungible
  * @category generated
@@ -37,10 +57,14 @@ export type ThawNonFungibleInstructionAccounts = {
   tokenAccount: web3.PublicKey
   tokenMint: web3.PublicKey
   tokenMintEdition: web3.PublicKey
+  withdrawalTokenAccount: web3.PublicKey
+  withdrawalAddress: web3.PublicKey
   signer: web3.PublicKey
-  delegate: web3.PublicKey
+  bunkr: web3.PublicKey
   tokenProgram?: web3.PublicKey
   tokenMetadataProgram: web3.PublicKey
+  systemProgram?: web3.PublicKey
+  associatedTokenProgram: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
 
@@ -52,16 +76,20 @@ export const thawNonFungibleInstructionDiscriminator = [
  * Creates a _ThawNonFungible_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
+ * @param args to provide as instruction data to the program
+ *
  * @category Instructions
  * @category ThawNonFungible
  * @category generated
  */
 export function createThawNonFungibleInstruction(
   accounts: ThawNonFungibleInstructionAccounts,
+  args: ThawNonFungibleInstructionArgs,
   programId = new web3.PublicKey('undefined')
 ) {
   const [data] = thawNonFungibleStruct.serialize({
     instructionDiscriminator: thawNonFungibleInstructionDiscriminator,
+    ...args,
   })
   const keys: web3.AccountMeta[] = [
     {
@@ -80,12 +108,22 @@ export function createThawNonFungibleInstruction(
       isSigner: false,
     },
     {
+      pubkey: accounts.withdrawalTokenAccount,
+      isWritable: true,
+      isSigner: true,
+    },
+    {
+      pubkey: accounts.withdrawalAddress,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
       pubkey: accounts.signer,
       isWritable: true,
       isSigner: true,
     },
     {
-      pubkey: accounts.delegate,
+      pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
     },
@@ -96,6 +134,16 @@ export function createThawNonFungibleInstruction(
     },
     {
       pubkey: accounts.tokenMetadataProgram,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.systemProgram ?? web3.SystemProgram.programId,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.associatedTokenProgram,
       isWritable: false,
       isSigner: false,
     },

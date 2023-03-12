@@ -17,8 +17,9 @@ import * as beetSolana from '@metaplex-foundation/beet-solana'
 export type BunkrArgs = {
   name: string
   withdrawAddress: web3.PublicKey
+  activated: boolean
   initTime: number
-  lastAccessed: number
+  lastAccessedInterval: number
   root: number[] /* size: 32 */
   currentHash: number[] /* size: 32 */
   finalHash: number[] /* size: 32 */
@@ -39,8 +40,9 @@ export class Bunkr implements BunkrArgs {
   private constructor(
     readonly name: string,
     readonly withdrawAddress: web3.PublicKey,
+    readonly activated: boolean,
     readonly initTime: number,
-    readonly lastAccessed: number,
+    readonly lastAccessedInterval: number,
     readonly root: number[] /* size: 32 */,
     readonly currentHash: number[] /* size: 32 */,
     readonly finalHash: number[] /* size: 32 */,
@@ -56,8 +58,9 @@ export class Bunkr implements BunkrArgs {
     return new Bunkr(
       args.name,
       args.withdrawAddress,
+      args.activated,
       args.initTime,
-      args.lastAccessed,
+      args.lastAccessedInterval,
       args.root,
       args.currentHash,
       args.finalHash,
@@ -172,8 +175,9 @@ export class Bunkr implements BunkrArgs {
     return {
       name: this.name,
       withdrawAddress: this.withdrawAddress.toBase58(),
+      activated: this.activated,
       initTime: this.initTime,
-      lastAccessed: this.lastAccessed,
+      lastAccessedInterval: this.lastAccessedInterval,
       root: this.root,
       currentHash: this.currentHash,
       finalHash: this.finalHash,
@@ -198,8 +202,9 @@ export const bunkrBeet = new beet.FixableBeetStruct<
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['name', beet.utf8String],
     ['withdrawAddress', beetSolana.publicKey],
+    ['activated', beet.bool],
     ['initTime', beet.u32],
-    ['lastAccessed', beet.u32],
+    ['lastAccessedInterval', beet.u32],
     ['root', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['currentHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['finalHash', beet.uniformFixedSizeArray(beet.u8, 32)],
