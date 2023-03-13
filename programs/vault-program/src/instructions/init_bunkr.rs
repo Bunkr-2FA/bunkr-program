@@ -7,7 +7,7 @@ use {
 
 #[derive(Accounts)]
 pub struct InitBunkr<'info> {
-    #[account(init, seeds=[b"bunkr", signer.key().as_ref()], bump , payer=signer, space = 350)]
+    #[account(init, seeds=[b"bunkr", signer.key().as_ref()], bump , payer=signer, space = 300)]
     pub bunkr: Account<'info,Bunkr>,
 
     #[account(mut, constraint = reimbursement_wallet.key() == REIMBURSEMENT_WALLETS.parse::<Pubkey>().unwrap())]

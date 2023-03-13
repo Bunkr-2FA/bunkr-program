@@ -5,7 +5,7 @@ pub mod errors;
 pub mod instructions;
 pub mod states;
 
-declare_id!("3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL");
+declare_id!("BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2");
 
 #[program]
 pub mod vault_program {

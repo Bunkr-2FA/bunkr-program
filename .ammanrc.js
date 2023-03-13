@@ -11,7 +11,7 @@ const validator = {
   programs: [
     {
       label: "Vault Program",
-      programId: "3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL",
+      programId: "BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2",
       deployPath: path.resolve(__dirname, "./target/deploy/vault_program.so"),
       ledgerDir: path.resolve(__dirname, "./test-ledger"),
     },

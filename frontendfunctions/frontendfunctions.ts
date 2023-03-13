@@ -15,7 +15,7 @@ export async function checkBunkrExistence(userPubkey: web3.PublicKey, programID:
 
 const connection = new web3.Connection("https://api.devnet.solana.com");
 const userPubkey = new web3.PublicKey("B93EYGbkngEgApWYjtrLxXR5T4w28B3ErZeENStkCsx7");
-const programID = new web3.PublicKey("3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL");
+const programID = new web3.PublicKey("BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2");
 
 (async () => {
     const output = await checkBunkrExistence(userPubkey, programID, connection);

@@ -2,17 +2,19 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-vault_program = "3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL"
+vault_program = "BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2"
 
 [programs.devnet]
-vault_program = "3PHnbmYZU1zVmD3rrLbkFTQonrRFj2GwRZwnLHJunAfL"
+vault_program = "BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2"
+[programs.mainnet]
+vault_program = "BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
-wallet = "/Users/orion/Documents/GitHub/vault-program/vault_upgrade_authority"
+cluster = "devnet"
+wallet = "/Users/orion/Documents/GitHub/vault-program/secret/bunkr_upgrade_authority.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

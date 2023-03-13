@@ -1,5 +1,7 @@
 use {crate::constants::*, anchor_lang::prelude::*, anchor_lang::solana_program::pubkey::Pubkey};
-#[account]
+
+
+#[account()]
 pub struct Bunkr {
     pub name: String,
     pub withdraw_address: Pubkey,

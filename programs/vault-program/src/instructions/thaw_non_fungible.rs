@@ -36,7 +36,7 @@ pub struct ThawNonFungible<'info> {
     pub signer: Signer<'info>,
 
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
-    pub bunkr: Account<'info, Bunkr>,
+    pub bunkr: Box<Account<'info, Bunkr>>,
 
     token_program: Program<'info, Token>,
     /// CHECK intstruction will fail if wrong program is supplied
