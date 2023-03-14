@@ -24,8 +24,8 @@ pub struct ThawNonFungible<'info> {
     #[account(
         init_if_needed,
         payer = signer,
-        token::mint = token_mint, 
-        token::authority = withdrawal_address
+        associated_token::mint = token_mint, 
+        associated_token::authority = withdrawal_address
     )]
     pub withdrawal_token_account: Account<'info, TokenAccount>,
 
@@ -59,7 +59,7 @@ pub fn handler(ctx: Context<ThawNonFungible>) -> Result<()> {
     let seeds = &[
         b"bunkr",
         signer.as_ref(),
-        &[*ctx.bumps.get("delegate").unwrap()]
+        &[*ctx.bumps.get("bunkr").unwrap()]
     ];
 
     let delegate_seeds = &[&seeds[..]];

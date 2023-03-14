@@ -3,7 +3,7 @@ import { createMerkleTree } from "./fileCreation";
 import fetch from "node-fetch";
 
 
-async function getDataFromSDrive(spacePubKey: string): Promise<Buffer> {
+export async function getDataFromSDrive(spacePubKey: string): Promise<Buffer> {
     //https://shdw-drive.genesysgo.net/47Wym2BZ1XVQh6a2o3Szx23g6VWThy5WHfGSBbLfeMrJ/testleaves.bin
     const url = "https://shdw-drive.genesysgo.net/" + spacePubKey + "/testleaves.bin";
     const data = fetch(url).then(res => res.buffer());

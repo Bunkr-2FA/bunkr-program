@@ -22,7 +22,6 @@ pub struct UnlockFungible<'info> {
         associated_token::authority = withdrawal_address,
         payer = signer
     )]
-
     pub to_associated_token_account: Account<'info, TokenAccount>,
     
     #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
@@ -52,9 +51,9 @@ pub fn handler(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
     
     let signer = ctx.accounts.signer.key();
     let seeds = &[
-        b"testvault",
+        b"bunkr",
         signer.as_ref(),
-        &[*ctx.bumps.get("vault").unwrap()]
+        &[*ctx.bumps.get("bunkr").unwrap()]
     ];
 
     let vault_seeds = &[&seeds[..]];

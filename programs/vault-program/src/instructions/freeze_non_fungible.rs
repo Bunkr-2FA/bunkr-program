@@ -49,9 +49,9 @@ pub fn handler(ctx: Context<FreezeNonFungible>) -> Result<()> {
     let signer = ctx.accounts.signer.key();
     
     let seeds = &[
-        b"testvault",
+        b"bunkr",
         signer.as_ref(),
-        &[*ctx.bumps.get("delegate").unwrap()]
+        &[*ctx.bumps.get("bunkr").unwrap()]
     ];
     let delegate_seeds = &[&seeds[..]];
 

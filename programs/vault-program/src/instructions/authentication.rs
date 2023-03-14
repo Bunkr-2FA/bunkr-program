@@ -33,7 +33,7 @@ pub fn handler(bunkr: &mut Bunkr, authentication_object: AuthenticationObject) -
 pub fn validate_root(init_time: u32, current_time_interval: &i64, root: Vec<u8>, proof_path: Vec<HashTuple>, hash: [u8; 32]) -> Result<i64> {
     assert!(root.len() == 32, "Root must be 32 bytes");
     assert!(hash.len() == 32, "Hash must be 32 bytes");
-    assert!(proof_path.len() == 20, "Proof path must be 32 hashes");
+    assert!(proof_path.len() == 19, "Proof path must be 32 hashes");
     for hash_tuple in proof_path.iter() {
         assert!(hash_tuple.hash.len() == 32, "Hash must be 32 bytes");
     }

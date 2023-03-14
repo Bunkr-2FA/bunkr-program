@@ -43,7 +43,7 @@ export const thawNonFungibleStruct = new beet.FixableBeetArgsStruct<
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
  * @property [] tokenMintEdition
- * @property [_writable_, **signer**] withdrawalTokenAccount
+ * @property [_writable_] withdrawalTokenAccount
  * @property [] withdrawalAddress
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
@@ -110,7 +110,7 @@ export function createThawNonFungibleInstruction(
     {
       pubkey: accounts.withdrawalTokenAccount,
       isWritable: true,
-      isSigner: true,
+      isSigner: false,
     },
     {
       pubkey: accounts.withdrawalAddress,
