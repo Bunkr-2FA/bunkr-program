@@ -4,4 +4,4 @@ use anchor_lang::prelude::*;
 
 
 #[constant]
-pub const REIMBURSEMENT_WALLETS: &str = "B93EYGbkngEgApWYjtrLxXR5T4w28B3ErZeENStkCsx8";
+pub const REIMBURSEMENT_WALLETS: &str = "8w4ivoTKciYNuFbsLmkC3ED3To4r6sy5NiJzdKca97zM";
