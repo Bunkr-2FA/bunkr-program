@@ -1,10 +1,9 @@
-use crate::instructions::{validate_password, validate_root};
 
-use super::AuthenticationObject;
 
 use {
     anchor_lang::{prelude::*},
-    crate::{constants::*, errors::ErrorCode, states::*}
+    crate::{constants::*, errors::ErrorCode, states::*},
+    crate::states::{validate_password, validate_root, AuthenticationObject}
 };
 
 #[derive(Accounts)]

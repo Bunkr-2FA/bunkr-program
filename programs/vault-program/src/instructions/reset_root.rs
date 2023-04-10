@@ -1,7 +1,7 @@
 
 use {
     anchor_lang::{prelude::*},
-    crate::{constants::*, errors::ErrorCode, states::*, instructions::validate_password},
+    crate::{constants::*, errors::ErrorCode, states::*, states::validate_password},
 };
 
 

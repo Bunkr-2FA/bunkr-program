@@ -1,14 +1,19 @@
-use {crate::instructions::*, anchor_lang::prelude::*};
+use {crate::instructions::*, crate::states::*, anchor_lang::prelude::*};
 
 pub mod constants;
 pub mod errors;
 pub mod instructions;
 pub mod states;
+// use crate::states::Bunkr;
+// use crate::states::AuthenticationObject;
 
 declare_id!("BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2");
 
 #[program]
 pub mod vault_program {
+
+    use crate::states::Bunkr;
+    use crate::states::AuthenticationObject;
 
     use super::*;
 
@@ -18,7 +23,7 @@ pub mod vault_program {
 
     pub fn change_withdrawal_address(ctx: Context<ChangeWithdrawalAddress>, authentication_object: AuthenticationObject) -> Result<()> {
         let bunkr = &mut ctx.accounts.bunkr;
-        authentication::handler(bunkr, authentication_object)?;
+        Bunkr::authenticate(bunkr, authentication_object)?;
         change_withdrawal_address::handler(ctx)
     }
 
@@ -30,8 +35,8 @@ pub mod vault_program {
         confirm_root::handler(ctx, confirm_root_object)
     }
 
-    pub fn close_bunkr(ctx: Context<CloseBunkr>) -> Result<()> {
-        close_bunkr::handler(ctx)
+    pub fn close_bunkr(_ctx: Context<CloseBunkr>) -> Result<()> {
+        close_bunkr::handler(_ctx)
     }
 
     pub fn freeze_non_fungible(ctx: Context<FreezeNonFungible>) -> Result<()> {
@@ -40,7 +45,7 @@ pub mod vault_program {
 
     pub fn thaw_non_fungible(ctx: Context<ThawNonFungible>, authentication_object: AuthenticationObject) -> Result<()> {
         let bunkr = &mut ctx.accounts.bunkr;
-        authentication::handler(bunkr, authentication_object)?;
+        Bunkr::authenticate(bunkr, authentication_object)?;
         thaw_non_fungible::handler(ctx)
     }
 
@@ -50,14 +55,14 @@ pub mod vault_program {
 
     pub fn unlock_fungible(ctx: Context<UnlockFungible>, amount: u64, authentication_object: AuthenticationObject) -> Result<()> {
         let bunkr = &mut ctx.accounts.bunkr;
-        authentication::handler(bunkr, authentication_object)?;
+        Bunkr::authenticate(bunkr, authentication_object)?;
         unlock_fungible::handler(ctx, amount)
     }
 
-    pub fn test_withdraw(ctx: Context<TestWithdraw>, authentication_object: AuthenticationObject) -> Result<()> {
-        let bunkr = &mut ctx.accounts.bunkr;
-        authentication::handler(bunkr, authentication_object)?;
-        test_withdraw::handler(ctx)
+    pub fn test_withdraw(_ctx: Context<TestWithdraw>, authentication_object: AuthenticationObject) -> Result<()> {
+        let bunkr = &mut _ctx.accounts.bunkr;
+        Bunkr::authenticate(bunkr, authentication_object)?;
+        Ok(())
     }
 }
 
