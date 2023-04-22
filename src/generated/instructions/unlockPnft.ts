@@ -15,19 +15,19 @@ import {
 
 /**
  * @category Instructions
- * @category ThawNonFungible
+ * @category UnlockPnft
  * @category generated
  */
-export type ThawNonFungibleInstructionArgs = {
+export type UnlockPnftInstructionArgs = {
   authenticationObject: AuthenticationObject
 }
 /**
  * @category Instructions
- * @category ThawNonFungible
+ * @category UnlockPnft
  * @category generated
  */
-export const thawNonFungibleStruct = new beet.FixableBeetArgsStruct<
-  ThawNonFungibleInstructionArgs & {
+export const unlockPnftStruct = new beet.FixableBeetArgsStruct<
+  UnlockPnftInstructionArgs & {
     instructionDiscriminator: number[] /* size: 8 */
   }
 >(
@@ -35,63 +35,90 @@ export const thawNonFungibleStruct = new beet.FixableBeetArgsStruct<
     ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['authenticationObject', authenticationObjectBeet],
   ],
-  'ThawNonFungibleInstructionArgs'
+  'UnlockPnftInstructionArgs'
 )
 /**
- * Accounts required by the _thawNonFungible_ instruction
+ * Accounts required by the _unlockPnft_ instruction
  *
+ * @property [] withdrawalAddress
+ * @property [_writable_] withdrawalTokenAccount
+ * @property [] withdrawalTokenMintRecord
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
  * @property [] tokenMintEdition
- * @property [_writable_] withdrawalTokenAccount
- * @property [] withdrawalAddress
+ * @property [_writable_] tokenMintRecord
+ * @property [_writable_] mintMetadata
+ * @property [] authRules
+ * @property [] sysvarInstructions
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
  * @property [] tokenMetadataProgram
+ * @property [] authRulesProgram
  * @property [] associatedTokenProgram
  * @category Instructions
- * @category ThawNonFungible
+ * @category UnlockPnft
  * @category generated
  */
-export type ThawNonFungibleInstructionAccounts = {
+export type UnlockPnftInstructionAccounts = {
+  withdrawalAddress: web3.PublicKey
+  withdrawalTokenAccount: web3.PublicKey
+  withdrawalTokenMintRecord: web3.PublicKey
   tokenAccount: web3.PublicKey
   tokenMint: web3.PublicKey
   tokenMintEdition: web3.PublicKey
-  withdrawalTokenAccount: web3.PublicKey
-  withdrawalAddress: web3.PublicKey
+  tokenMintRecord: web3.PublicKey
+  mintMetadata: web3.PublicKey
+  authRules: web3.PublicKey
+  sysvarInstructions: web3.PublicKey
   signer: web3.PublicKey
   bunkr: web3.PublicKey
   tokenProgram?: web3.PublicKey
   tokenMetadataProgram: web3.PublicKey
+  authRulesProgram: web3.PublicKey
   systemProgram?: web3.PublicKey
   associatedTokenProgram: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
 
-export const thawNonFungibleInstructionDiscriminator = [
-  106, 156, 65, 170, 115, 70, 165, 93,
+export const unlockPnftInstructionDiscriminator = [
+  234, 95, 150, 164, 86, 232, 65, 192,
 ]
 
 /**
- * Creates a _ThawNonFungible_ instruction.
+ * Creates a _UnlockPnft_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
  * @param args to provide as instruction data to the program
  *
  * @category Instructions
- * @category ThawNonFungible
+ * @category UnlockPnft
  * @category generated
  */
-export function createThawNonFungibleInstruction(
-  accounts: ThawNonFungibleInstructionAccounts,
-  args: ThawNonFungibleInstructionArgs,
+export function createUnlockPnftInstruction(
+  accounts: UnlockPnftInstructionAccounts,
+  args: UnlockPnftInstructionArgs,
   programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
-  const [data] = thawNonFungibleStruct.serialize({
-    instructionDiscriminator: thawNonFungibleInstructionDiscriminator,
+  const [data] = unlockPnftStruct.serialize({
+    instructionDiscriminator: unlockPnftInstructionDiscriminator,
     ...args,
   })
   const keys: web3.AccountMeta[] = [
+    {
+      pubkey: accounts.withdrawalAddress,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.withdrawalTokenAccount,
+      isWritable: true,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.withdrawalTokenMintRecord,
+      isWritable: false,
+      isSigner: false,
+    },
     {
       pubkey: accounts.tokenAccount,
       isWritable: true,
@@ -108,12 +135,22 @@ export function createThawNonFungibleInstruction(
       isSigner: false,
     },
     {
-      pubkey: accounts.withdrawalTokenAccount,
+      pubkey: accounts.tokenMintRecord,
       isWritable: true,
       isSigner: false,
     },
     {
-      pubkey: accounts.withdrawalAddress,
+      pubkey: accounts.mintMetadata,
+      isWritable: true,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.authRules,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.sysvarInstructions,
       isWritable: false,
       isSigner: false,
     },
@@ -134,6 +171,11 @@ export function createThawNonFungibleInstruction(
     },
     {
       pubkey: accounts.tokenMetadataProgram,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.authRulesProgram,
       isWritable: false,
       isSigner: false,
     },

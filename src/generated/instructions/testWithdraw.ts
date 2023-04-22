@@ -68,7 +68,7 @@ export const testWithdrawInstructionDiscriminator = [
 export function createTestWithdrawInstruction(
   accounts: TestWithdrawInstructionAccounts,
   args: TestWithdrawInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = testWithdrawStruct.serialize({
     instructionDiscriminator: testWithdrawInstructionDiscriminator,

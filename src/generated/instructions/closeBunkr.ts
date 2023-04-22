@@ -49,7 +49,7 @@ export const closeBunkrInstructionDiscriminator = [
  */
 export function createCloseBunkrInstruction(
   accounts: CloseBunkrInstructionAccounts,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = closeBunkrStruct.serialize({
     instructionDiscriminator: closeBunkrInstructionDiscriminator,

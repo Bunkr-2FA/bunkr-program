@@ -9,7 +9,8 @@ pub mod test_withdraw;
 pub mod change_withdrawal_address;
 pub mod reset_root;
 pub mod confirm_root;
-
+pub mod lock_pnft;
+pub mod unlock_pnft;
 
 pub use init_bunkr::*;
 pub use freeze_non_fungible::*;
@@ -21,3 +22,5 @@ pub use test_withdraw::*;
 pub use change_withdrawal_address::*;
 pub use reset_root::*;
 pub use confirm_root::*;
+pub use lock_pnft::*;
+pub use unlock_pnft::*;

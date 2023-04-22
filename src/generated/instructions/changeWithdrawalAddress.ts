@@ -70,7 +70,7 @@ export const changeWithdrawalAddressInstructionDiscriminator = [
 export function createChangeWithdrawalAddressInstruction(
   accounts: ChangeWithdrawalAddressInstructionAccounts,
   args: ChangeWithdrawalAddressInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = changeWithdrawalAddressStruct.serialize({
     instructionDiscriminator: changeWithdrawalAddressInstructionDiscriminator,

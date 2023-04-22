@@ -4,8 +4,7 @@ pub mod constants;
 pub mod errors;
 pub mod instructions;
 pub mod states;
-// use crate::states::Bunkr;
-// use crate::states::AuthenticationObject;
+
 
 declare_id!("BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2");
 
@@ -49,6 +48,15 @@ pub mod vault_program {
         thaw_non_fungible::handler(ctx)
     }
 
+    pub fn lock_pnft(ctx: Context<LockPNFT>) -> Result<()> {
+        lock_pnft::handler(ctx)
+    }
+
+    pub fn unlock_pnft(ctx: Context<UnlockPNFT>, authentication_object: AuthenticationObject) -> Result<()> {
+        let bunkr = &mut ctx.accounts.bunkr;
+        Bunkr::authenticate(bunkr, authentication_object)?;
+        unlock_pnft::handler(ctx)
+    }
     pub fn lock_fungible(ctx: Context<LockFungible>, amount: u64) -> Result<()> {
         lock_fungible::handler(ctx, amount)
     }

@@ -68,7 +68,7 @@ export const confirmRootInstructionDiscriminator = [
 export function createConfirmRootInstruction(
   accounts: ConfirmRootInstructionAccounts,
   args: ConfirmRootInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = confirmRootStruct.serialize({
     instructionDiscriminator: confirmRootInstructionDiscriminator,
