@@ -8,33 +8,16 @@
 import * as splToken from '@solana/spl-token'
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import {
-  AuthenticationObject,
-  authenticationObjectBeet,
-} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
  * @category LockPnft
  * @category generated
  */
-export type LockPnftInstructionArgs = {
-  authenticationObject: AuthenticationObject
-}
-/**
- * @category Instructions
- * @category LockPnft
- * @category generated
- */
-export const lockPnftStruct = new beet.FixableBeetArgsStruct<
-  LockPnftInstructionArgs & {
-    instructionDiscriminator: number[] /* size: 8 */
-  }
->(
-  [
-    ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['authenticationObject', authenticationObjectBeet],
-  ],
+export const lockPnftStruct = new beet.BeetArgsStruct<{
+  instructionDiscriminator: number[] /* size: 8 */
+}>(
+  [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
   'LockPnftInstructionArgs'
 )
 /**
@@ -43,7 +26,7 @@ export const lockPnftStruct = new beet.FixableBeetArgsStruct<
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
  * @property [] tokenMintEdition
- * @property [] tokenMintRecord
+ * @property [_writable_] tokenMintRecord
  * @property [_writable_] mintMetadata
  * @property [] authRules
  * @property [] sysvarInstructions
@@ -80,20 +63,16 @@ export const lockPnftInstructionDiscriminator = [
  * Creates a _LockPnft_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
- * @param args to provide as instruction data to the program
- *
  * @category Instructions
  * @category LockPnft
  * @category generated
  */
 export function createLockPnftInstruction(
   accounts: LockPnftInstructionAccounts,
-  args: LockPnftInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = lockPnftStruct.serialize({
     instructionDiscriminator: lockPnftInstructionDiscriminator,
-    ...args,
   })
   const keys: web3.AccountMeta[] = [
     {
@@ -113,7 +92,7 @@ export function createLockPnftInstruction(
     },
     {
       pubkey: accounts.tokenMintRecord,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {

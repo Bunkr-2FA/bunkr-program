@@ -65,7 +65,7 @@ export const resetRootInstructionDiscriminator = [
 export function createResetRootInstruction(
   accounts: ResetRootInstructionAccounts,
   args: ResetRootInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = resetRootStruct.serialize({
     instructionDiscriminator: resetRootInstructionDiscriminator,

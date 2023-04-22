@@ -85,7 +85,7 @@ export const thawNonFungibleInstructionDiscriminator = [
 export function createThawNonFungibleInstruction(
   accounts: ThawNonFungibleInstructionAccounts,
   args: ThawNonFungibleInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = thawNonFungibleStruct.serialize({
     instructionDiscriminator: thawNonFungibleInstructionDiscriminator,

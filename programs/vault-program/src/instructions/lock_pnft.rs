@@ -21,6 +21,7 @@ pub struct LockPNFT<'info> {
     /// CHECK instruction will fail if wrong edition is supplied
     pub token_mint_edition: AccountInfo<'info>,
     /// CHECK instruction will fail if wrong record is supplied
+    #[account(mut)]
     pub token_mint_record: AccountInfo<'info>,
     /// CHECK instruction will fail if wrong metadata is supplied
     #[account(mut)]

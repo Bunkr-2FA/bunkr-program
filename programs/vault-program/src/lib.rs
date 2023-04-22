@@ -48,9 +48,7 @@ pub mod vault_program {
         thaw_non_fungible::handler(ctx)
     }
 
-    pub fn lock_pnft(ctx: Context<LockPNFT>, authentication_object: AuthenticationObject) -> Result<()> {
-        let bunkr = &mut ctx.accounts.bunkr;
-        Bunkr::authenticate(bunkr, authentication_object)?;
+    pub fn lock_pnft(ctx: Context<LockPNFT>) -> Result<()> {
         lock_pnft::handler(ctx)
     }
 

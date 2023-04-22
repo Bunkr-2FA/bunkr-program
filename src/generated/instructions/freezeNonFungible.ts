@@ -58,7 +58,7 @@ export const freezeNonFungibleInstructionDiscriminator = [
  */
 export function createFreezeNonFungibleInstruction(
   accounts: FreezeNonFungibleInstructionAccounts,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = freezeNonFungibleStruct.serialize({
     instructionDiscriminator: freezeNonFungibleInstructionDiscriminator,

@@ -12,6 +12,20 @@ use {
 
 #[derive(Accounts)]
 pub struct UnlockPNFT<'info> {
+    #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
+    pub withdrawal_address: SystemAccount<'info>,
+
+    #[account(
+        init_if_needed,
+        payer = signer,
+        associated_token::mint = token_mint, 
+        associated_token::authority = withdrawal_address
+    )]
+    pub withdrawal_token_account: Account<'info, TokenAccount>,
+
+    /// CHECK instruction will fail if wrong record is supplied
+    pub withdrawal_token_mint_record: AccountInfo<'info>,
+    
     #[account(
         mut, 
         token::mint = token_mint, 
@@ -22,6 +36,7 @@ pub struct UnlockPNFT<'info> {
     /// CHECK instruction will fail if wrong edition is supplied
     pub token_mint_edition: AccountInfo<'info>,
     /// CHECK instruction will fail if wrong record is supplied
+    #[account(mut)]
     pub token_mint_record: AccountInfo<'info>,
     /// CHECK instruction will fail if wrong metadata is supplied
     #[account(mut)]
@@ -36,28 +51,13 @@ pub struct UnlockPNFT<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Box<Account<'info, Bunkr>>,
 
-    #[account(
-        init_if_needed,
-        associated_token::mint = token_mint,
-        associated_token::authority = withdrawal_address,
-        payer = signer
-    )]
-    pub to_associated_token_account: Account<'info, TokenAccount>,
-    
-    /// CHECK instruction will fail if wrong mint record is supplied
-    pub to_token_mint_record: AccountInfo<'info>,
-
-    #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
-    pub withdrawal_address: SystemAccount<'info>,
-    
-
     pub token_program: Program<'info, Token>,
     /// CHECK intstruction will fail if wrong program is supplied
     pub token_metadata_program: AccountInfo<'info>,
     /// CHECK intstruction will fail if wrong program is supplied
     pub auth_rules_program: AccountInfo<'info>,
     pub system_program: Program<'info, System>,
-    pub associated_token_program: Program<'info, AssociatedToken>
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 
@@ -243,7 +243,7 @@ pub fn handler(ctx: Context<UnlockPNFT>) -> Result<()> {
                         // #[account(1, name="token_owner", desc="Token account owner")]
                         AccountMeta::new_readonly(signer.key(), false),
                         // #[account(2, writable, name="destination", desc="Destination token account")]
-                        AccountMeta::new(ctx.accounts.to_associated_token_account.key(), false),
+                        AccountMeta::new(ctx.accounts.withdrawal_token_account.key(), false),
                         // #[account(3, name="destination_owner", desc="Destination token account owner")]
                         AccountMeta::new_readonly(ctx.accounts.withdrawal_address.key(), false),
                         // #[account(4, name="mint", desc="Mint of token asset")]
@@ -255,7 +255,7 @@ pub fn handler(ctx: Context<UnlockPNFT>) -> Result<()> {
                         // #[account(7, optional, writable, name="recipient_token_record", desc="Owner token record account")]
                         AccountMeta::new(ctx.accounts.token_mint_record.key(), false),
                         // #[account(8, optional, writable, name="destination_token_record", desc="Destination token record account")]
-                        AccountMeta::new(ctx.accounts.to_token_mint_record.key(), false),
+                        AccountMeta::new(ctx.accounts.withdrawal_token_mint_record.key(), false),
                         // #[account(9, signer, name="authority", desc="Transfer authority (token owner or delegate)")]
                         AccountMeta::new_readonly(bunkr.key(), true),
                         // #[account(10, signer, writable, name="payer", desc="Payer")]
@@ -283,13 +283,13 @@ pub fn handler(ctx: Context<UnlockPNFT>) -> Result<()> {
                 &[
                     ctx.accounts.token_account.to_account_info(),
                     ctx.accounts.signer.to_account_info(),
-                    ctx.accounts.to_associated_token_account.to_account_info(),
+                    ctx.accounts.withdrawal_token_account.to_account_info(),
                     ctx.accounts.withdrawal_address.to_account_info(),
                     ctx.accounts.token_mint.to_account_info(),
                     ctx.accounts.mint_metadata.to_account_info(),
                     ctx.accounts.token_mint_edition.to_account_info(),
                     ctx.accounts.token_mint_record.to_account_info(),
-                    ctx.accounts.to_token_mint_record.to_account_info(),
+                    ctx.accounts.withdrawal_token_mint_record.to_account_info(),
                     ctx.accounts.bunkr.to_account_info(),
                     ctx.accounts.signer.to_account_info(),
                     ctx.accounts.system_program.to_account_info(),

@@ -2300,6 +2300,7 @@ dependencies = [
  "anchor-spl",
  "bs58 0.4.0",
  "mpl-token-metadata",
+ "zeroize",
 ]
 
 [[package]]

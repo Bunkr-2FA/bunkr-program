@@ -40,18 +40,18 @@ export const unlockPnftStruct = new beet.FixableBeetArgsStruct<
 /**
  * Accounts required by the _unlockPnft_ instruction
  *
+ * @property [] withdrawalAddress
+ * @property [_writable_] withdrawalTokenAccount
+ * @property [] withdrawalTokenMintRecord
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
  * @property [] tokenMintEdition
- * @property [] tokenMintRecord
+ * @property [_writable_] tokenMintRecord
  * @property [_writable_] mintMetadata
  * @property [] authRules
  * @property [] sysvarInstructions
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
- * @property [_writable_] toAssociatedTokenAccount
- * @property [] toTokenMintRecord
- * @property [] withdrawalAddress
  * @property [] tokenMetadataProgram
  * @property [] authRulesProgram
  * @property [] associatedTokenProgram
@@ -60,6 +60,9 @@ export const unlockPnftStruct = new beet.FixableBeetArgsStruct<
  * @category generated
  */
 export type UnlockPnftInstructionAccounts = {
+  withdrawalAddress: web3.PublicKey
+  withdrawalTokenAccount: web3.PublicKey
+  withdrawalTokenMintRecord: web3.PublicKey
   tokenAccount: web3.PublicKey
   tokenMint: web3.PublicKey
   tokenMintEdition: web3.PublicKey
@@ -69,9 +72,6 @@ export type UnlockPnftInstructionAccounts = {
   sysvarInstructions: web3.PublicKey
   signer: web3.PublicKey
   bunkr: web3.PublicKey
-  toAssociatedTokenAccount: web3.PublicKey
-  toTokenMintRecord: web3.PublicKey
-  withdrawalAddress: web3.PublicKey
   tokenProgram?: web3.PublicKey
   tokenMetadataProgram: web3.PublicKey
   authRulesProgram: web3.PublicKey
@@ -97,13 +97,28 @@ export const unlockPnftInstructionDiscriminator = [
 export function createUnlockPnftInstruction(
   accounts: UnlockPnftInstructionAccounts,
   args: UnlockPnftInstructionArgs,
-  programId = new web3.PublicKey('undefined')
+  programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = unlockPnftStruct.serialize({
     instructionDiscriminator: unlockPnftInstructionDiscriminator,
     ...args,
   })
   const keys: web3.AccountMeta[] = [
+    {
+      pubkey: accounts.withdrawalAddress,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.withdrawalTokenAccount,
+      isWritable: true,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.withdrawalTokenMintRecord,
+      isWritable: false,
+      isSigner: false,
+    },
     {
       pubkey: accounts.tokenAccount,
       isWritable: true,
@@ -121,7 +136,7 @@ export function createUnlockPnftInstruction(
     },
     {
       pubkey: accounts.tokenMintRecord,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {
@@ -147,21 +162,6 @@ export function createUnlockPnftInstruction(
     {
       pubkey: accounts.bunkr,
       isWritable: true,
-      isSigner: false,
-    },
-    {
-      pubkey: accounts.toAssociatedTokenAccount,
-      isWritable: true,
-      isSigner: false,
-    },
-    {
-      pubkey: accounts.toTokenMintRecord,
-      isWritable: false,
-      isSigner: false,
-    },
-    {
-      pubkey: accounts.withdrawalAddress,
-      isWritable: false,
       isSigner: false,
     },
     {
