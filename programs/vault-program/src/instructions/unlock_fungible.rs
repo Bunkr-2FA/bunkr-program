@@ -61,6 +61,7 @@ pub fn handler(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
     let cpi_program = ctx.accounts.token_program.to_account_info();
     let cpi_context = CpiContext::new(cpi_program, cpi_accounts).with_signer(vault_seeds);
 
+    // just pass raw_amount, else you cant unlock btc
     let raw_amount = amount * (10_usize.pow(ctx.accounts.token_mint.decimals as u32)) as u64;
     anchor_spl::token::transfer(cpi_context, raw_amount)?;
 

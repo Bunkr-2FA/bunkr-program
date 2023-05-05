@@ -4,7 +4,7 @@ use {
     crate::{states::*, constants::*, errors::ErrorCode,},
     anchor_lang::{prelude::*,solana_program::program::invoke_signed},
     mpl_token_metadata::instruction::{thaw_delegated_account},
-    anchor_spl::{token::{Mint, Token, TokenAccount, Revoke, revoke,}, associated_token::AssociatedToken}
+    anchor_spl::{token::{Mint, Token, TokenAccount, Revoke, revoke,}, associated_token::AssociatedToken, metadata::Metadata}
 };
 
 
@@ -39,8 +39,7 @@ pub struct ThawNonFungible<'info> {
     pub bunkr: Box<Account<'info, Bunkr>>,
 
     token_program: Program<'info, Token>,
-    /// CHECK intstruction will fail if wrong program is supplied
-    token_metadata_program: AccountInfo<'info>,
+    token_metadata_program: Program<'info, Metadata>,
     system_program: Program<'info, System>,
     associated_token_program: Program<'info, AssociatedToken>,
 
@@ -53,8 +52,6 @@ pub struct ThawNonFungible<'info> {
 pub fn handler(ctx: Context<ThawNonFungible>) -> Result<()> {
     let signer = ctx.accounts.signer.key();
     let withdrawal_address = ctx.accounts.withdrawal_address.key();
-
-    if withdrawal_address != signer {assert!(withdrawal_address == ctx.accounts.bunkr.withdraw_address, "Mismatched Withdrawal Address")}
 
     let seeds = &[
         b"bunkr",
@@ -85,8 +82,6 @@ pub fn handler(ctx: Context<ThawNonFungible>) -> Result<()> {
         delegate_seeds)?;
 
         if withdrawal_address != signer {
-            assert!(withdrawal_address == ctx.accounts.bunkr.withdraw_address);
-
             let cpi_accounts = Transfer {
                 from: ctx.accounts.token_account.to_account_info(),
                 to: ctx.accounts.withdrawal_token_account.to_account_info(),

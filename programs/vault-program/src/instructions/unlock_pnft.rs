@@ -176,8 +176,6 @@ pub fn handler(ctx: Context<UnlockPNFT>) -> Result<()> {
         ],
     )?;
         if withdrawal_address != signer {
-            assert!(withdrawal_address == ctx.accounts.bunkr.withdraw_address);
-
             invoke(
                 &Instruction {
                     program_id: mpl_token_metadata::id(),

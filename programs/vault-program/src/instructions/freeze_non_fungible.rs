@@ -1,8 +1,9 @@
+
 use {
     crate::{states::*, constants::*, errors::ErrorCode,},
     anchor_lang::{prelude::*,solana_program::program::invoke_signed},
     mpl_token_metadata::instruction::{freeze_delegated_account},
-    anchor_spl::{token::{Mint, Token, TokenAccount, Approve, approve}}
+    anchor_spl::{metadata::Metadata, token::{Mint, Token, TokenAccount, Approve, approve}}
 };
 
 
@@ -25,14 +26,8 @@ pub struct FreezeNonFungible<'info> {
     pub bunkr: Account<'info, Bunkr>,
 
     token_program: Program<'info, Token>,
-    /// CHECK intstruction will fail if wrong program is supplied
-    token_metadata_program: AccountInfo<'info>
+    token_metadata_program: Program<'info, Metadata>,
 }
-
-
-
-
-
 
 
 pub fn handler(ctx: Context<FreezeNonFungible>) -> Result<()> {
