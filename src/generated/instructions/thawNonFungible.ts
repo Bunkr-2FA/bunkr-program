@@ -8,33 +8,16 @@
 import * as splToken from '@solana/spl-token'
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import {
-  AuthenticationObject,
-  authenticationObjectBeet,
-} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
  * @category ThawNonFungible
  * @category generated
  */
-export type ThawNonFungibleInstructionArgs = {
-  authenticationObject: AuthenticationObject
-}
-/**
- * @category Instructions
- * @category ThawNonFungible
- * @category generated
- */
-export const thawNonFungibleStruct = new beet.FixableBeetArgsStruct<
-  ThawNonFungibleInstructionArgs & {
-    instructionDiscriminator: number[] /* size: 8 */
-  }
->(
-  [
-    ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['authenticationObject', authenticationObjectBeet],
-  ],
+export const thawNonFungibleStruct = new beet.BeetArgsStruct<{
+  instructionDiscriminator: number[] /* size: 8 */
+}>(
+  [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
   'ThawNonFungibleInstructionArgs'
 )
 /**
@@ -76,20 +59,16 @@ export const thawNonFungibleInstructionDiscriminator = [
  * Creates a _ThawNonFungible_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
- * @param args to provide as instruction data to the program
- *
  * @category Instructions
  * @category ThawNonFungible
  * @category generated
  */
 export function createThawNonFungibleInstruction(
   accounts: ThawNonFungibleInstructionAccounts,
-  args: ThawNonFungibleInstructionArgs,
   programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = thawNonFungibleStruct.serialize({
     instructionDiscriminator: thawNonFungibleInstructionDiscriminator,
-    ...args,
   })
   const keys: web3.AccountMeta[] = [
     {

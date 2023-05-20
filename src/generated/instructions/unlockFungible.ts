@@ -8,10 +8,6 @@
 import * as splToken from '@solana/spl-token'
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import {
-  AuthenticationObject,
-  authenticationObjectBeet,
-} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
@@ -20,14 +16,13 @@ import {
  */
 export type UnlockFungibleInstructionArgs = {
   amount: beet.bignum
-  authenticationObject: AuthenticationObject
 }
 /**
  * @category Instructions
  * @category UnlockFungible
  * @category generated
  */
-export const unlockFungibleStruct = new beet.FixableBeetArgsStruct<
+export const unlockFungibleStruct = new beet.BeetArgsStruct<
   UnlockFungibleInstructionArgs & {
     instructionDiscriminator: number[] /* size: 8 */
   }
@@ -35,7 +30,6 @@ export const unlockFungibleStruct = new beet.FixableBeetArgsStruct<
   [
     ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['amount', beet.u64],
-    ['authenticationObject', authenticationObjectBeet],
   ],
   'UnlockFungibleInstructionArgs'
 )

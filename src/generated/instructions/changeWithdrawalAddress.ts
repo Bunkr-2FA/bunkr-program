@@ -7,33 +7,16 @@
 
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import {
-  AuthenticationObject,
-  authenticationObjectBeet,
-} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
  * @category ChangeWithdrawalAddress
  * @category generated
  */
-export type ChangeWithdrawalAddressInstructionArgs = {
-  authenticationObject: AuthenticationObject
-}
-/**
- * @category Instructions
- * @category ChangeWithdrawalAddress
- * @category generated
- */
-export const changeWithdrawalAddressStruct = new beet.FixableBeetArgsStruct<
-  ChangeWithdrawalAddressInstructionArgs & {
-    instructionDiscriminator: number[] /* size: 8 */
-  }
->(
-  [
-    ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['authenticationObject', authenticationObjectBeet],
-  ],
+export const changeWithdrawalAddressStruct = new beet.BeetArgsStruct<{
+  instructionDiscriminator: number[] /* size: 8 */
+}>(
+  [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
   'ChangeWithdrawalAddressInstructionArgs'
 )
 /**
@@ -61,20 +44,16 @@ export const changeWithdrawalAddressInstructionDiscriminator = [
  * Creates a _ChangeWithdrawalAddress_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
- * @param args to provide as instruction data to the program
- *
  * @category Instructions
  * @category ChangeWithdrawalAddress
  * @category generated
  */
 export function createChangeWithdrawalAddressInstruction(
   accounts: ChangeWithdrawalAddressInstructionAccounts,
-  args: ChangeWithdrawalAddressInstructionArgs,
   programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = changeWithdrawalAddressStruct.serialize({
     instructionDiscriminator: changeWithdrawalAddressInstructionDiscriminator,
-    ...args,
   })
   const keys: web3.AccountMeta[] = [
     {

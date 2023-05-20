@@ -7,33 +7,16 @@
 
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import {
-  AuthenticationObject,
-  authenticationObjectBeet,
-} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
  * @category TestWithdraw
  * @category generated
  */
-export type TestWithdrawInstructionArgs = {
-  authenticationObject: AuthenticationObject
-}
-/**
- * @category Instructions
- * @category TestWithdraw
- * @category generated
- */
-export const testWithdrawStruct = new beet.FixableBeetArgsStruct<
-  TestWithdrawInstructionArgs & {
-    instructionDiscriminator: number[] /* size: 8 */
-  }
->(
-  [
-    ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['authenticationObject', authenticationObjectBeet],
-  ],
+export const testWithdrawStruct = new beet.BeetArgsStruct<{
+  instructionDiscriminator: number[] /* size: 8 */
+}>(
+  [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
   'TestWithdrawInstructionArgs'
 )
 /**
@@ -59,20 +42,16 @@ export const testWithdrawInstructionDiscriminator = [
  * Creates a _TestWithdraw_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
- * @param args to provide as instruction data to the program
- *
  * @category Instructions
  * @category TestWithdraw
  * @category generated
  */
 export function createTestWithdrawInstruction(
   accounts: TestWithdrawInstructionAccounts,
-  args: TestWithdrawInstructionArgs,
   programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = testWithdrawStruct.serialize({
     instructionDiscriminator: testWithdrawInstructionDiscriminator,
-    ...args,
   })
   const keys: web3.AccountMeta[] = [
     {

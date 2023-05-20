@@ -8,33 +8,16 @@
 import * as splToken from '@solana/spl-token'
 import * as beet from '@metaplex-foundation/beet'
 import * as web3 from '@solana/web3.js'
-import {
-  AuthenticationObject,
-  authenticationObjectBeet,
-} from '../types/AuthenticationObject'
 
 /**
  * @category Instructions
  * @category UnlockPnft
  * @category generated
  */
-export type UnlockPnftInstructionArgs = {
-  authenticationObject: AuthenticationObject
-}
-/**
- * @category Instructions
- * @category UnlockPnft
- * @category generated
- */
-export const unlockPnftStruct = new beet.FixableBeetArgsStruct<
-  UnlockPnftInstructionArgs & {
-    instructionDiscriminator: number[] /* size: 8 */
-  }
->(
-  [
-    ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['authenticationObject', authenticationObjectBeet],
-  ],
+export const unlockPnftStruct = new beet.BeetArgsStruct<{
+  instructionDiscriminator: number[] /* size: 8 */
+}>(
+  [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
   'UnlockPnftInstructionArgs'
 )
 /**
@@ -88,20 +71,16 @@ export const unlockPnftInstructionDiscriminator = [
  * Creates a _UnlockPnft_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
- * @param args to provide as instruction data to the program
- *
  * @category Instructions
  * @category UnlockPnft
  * @category generated
  */
 export function createUnlockPnftInstruction(
   accounts: UnlockPnftInstructionAccounts,
-  args: UnlockPnftInstructionArgs,
   programId = new web3.PublicKey('BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2')
 ) {
   const [data] = unlockPnftStruct.serialize({
     instructionDiscriminator: unlockPnftInstructionDiscriminator,
-    ...args,
   })
   const keys: web3.AccountMeta[] = [
     {

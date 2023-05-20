@@ -5,16 +5,15 @@
  * See: https://github.com/metaplex-foundation/solita
  */
 
+import * as web3 from '@solana/web3.js'
 import * as beet from '@metaplex-foundation/beet'
+import * as beetSolana from '@metaplex-foundation/beet-solana'
 export type InitBunkrData = {
-  name: string
-  initTime: number
-  root: number[] /* size: 32 */
-  initialHash: number[] /* size: 32 */
-  finalHash: number[] /* size: 32 */
-  initialResetHash: number[] /* size: 32 */
+  rawId: Uint8Array
+  publicKey: number[] /* size: 32 */
+  withdrawAddress: web3.PublicKey
+  currentResetHash: number[] /* size: 32 */
   finalResetHash: number[] /* size: 32 */
-  shadowDriveSpace: string
 }
 
 /**
@@ -23,14 +22,11 @@ export type InitBunkrData = {
  */
 export const initBunkrDataBeet = new beet.FixableBeetArgsStruct<InitBunkrData>(
   [
-    ['name', beet.utf8String],
-    ['initTime', beet.u32],
-    ['root', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['initialHash', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['finalHash', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['initialResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
+    ['rawId', beet.bytes],
+    ['publicKey', beet.uniformFixedSizeArray(beet.u8, 32)],
+    ['withdrawAddress', beetSolana.publicKey],
+    ['currentResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['finalResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['shadowDriveSpace', beet.utf8String],
   ],
   'InitBunkrData'
 )

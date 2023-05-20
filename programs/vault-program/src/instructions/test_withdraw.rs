@@ -9,6 +9,8 @@ pub struct TestWithdraw<'info> {
     pub bunkr: Account<'info, Bunkr>,
     #[account(mut)]
     pub signer: Signer<'info>,
+    #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    pub authentication_wallet: Signer<'info>
 }
 
 

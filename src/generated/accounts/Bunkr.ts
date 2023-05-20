@@ -15,17 +15,11 @@ import * as beetSolana from '@metaplex-foundation/beet-solana'
  * @category generated
  */
 export type BunkrArgs = {
-  name: string
+  rawId: Uint8Array
+  publicKey: number[] /* size: 32 */
   withdrawAddress: web3.PublicKey
-  activated: boolean
-  initTime: number
-  lastAccessedInterval: number
-  root: number[] /* size: 32 */
-  currentHash: number[] /* size: 32 */
-  finalHash: number[] /* size: 32 */
   currentResetHash: number[] /* size: 32 */
   finalResetHash: number[] /* size: 32 */
-  shadowDriveSpace: string
 }
 
 export const bunkrDiscriminator = [23, 78, 219, 41, 44, 106, 29, 227]
@@ -38,17 +32,11 @@ export const bunkrDiscriminator = [23, 78, 219, 41, 44, 106, 29, 227]
  */
 export class Bunkr implements BunkrArgs {
   private constructor(
-    readonly name: string,
+    readonly rawId: Uint8Array,
+    readonly publicKey: number[] /* size: 32 */,
     readonly withdrawAddress: web3.PublicKey,
-    readonly activated: boolean,
-    readonly initTime: number,
-    readonly lastAccessedInterval: number,
-    readonly root: number[] /* size: 32 */,
-    readonly currentHash: number[] /* size: 32 */,
-    readonly finalHash: number[] /* size: 32 */,
     readonly currentResetHash: number[] /* size: 32 */,
-    readonly finalResetHash: number[] /* size: 32 */,
-    readonly shadowDriveSpace: string
+    readonly finalResetHash: number[] /* size: 32 */
   ) {}
 
   /**
@@ -56,17 +44,11 @@ export class Bunkr implements BunkrArgs {
    */
   static fromArgs(args: BunkrArgs) {
     return new Bunkr(
-      args.name,
+      args.rawId,
+      args.publicKey,
       args.withdrawAddress,
-      args.activated,
-      args.initTime,
-      args.lastAccessedInterval,
-      args.root,
-      args.currentHash,
-      args.finalHash,
       args.currentResetHash,
-      args.finalResetHash,
-      args.shadowDriveSpace
+      args.finalResetHash
     )
   }
 
@@ -175,17 +157,11 @@ export class Bunkr implements BunkrArgs {
    */
   pretty() {
     return {
-      name: this.name,
+      rawId: this.rawId,
+      publicKey: this.publicKey,
       withdrawAddress: this.withdrawAddress.toBase58(),
-      activated: this.activated,
-      initTime: this.initTime,
-      lastAccessedInterval: this.lastAccessedInterval,
-      root: this.root,
-      currentHash: this.currentHash,
-      finalHash: this.finalHash,
       currentResetHash: this.currentResetHash,
       finalResetHash: this.finalResetHash,
-      shadowDriveSpace: this.shadowDriveSpace,
     }
   }
 }
@@ -202,17 +178,11 @@ export const bunkrBeet = new beet.FixableBeetStruct<
 >(
   [
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
-    ['name', beet.utf8String],
+    ['rawId', beet.bytes],
+    ['publicKey', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['withdrawAddress', beetSolana.publicKey],
-    ['activated', beet.bool],
-    ['initTime', beet.u32],
-    ['lastAccessedInterval', beet.u32],
-    ['root', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['currentHash', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['finalHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['currentResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['finalResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['shadowDriveSpace', beet.utf8String],
   ],
   Bunkr.fromArgs,
   'Bunkr'
