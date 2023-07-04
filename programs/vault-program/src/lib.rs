@@ -52,7 +52,7 @@ pub mod vault_program {
     }
 
     pub fn test_withdraw(_ctx: Context<TestWithdraw>) -> Result<()> {
-        Ok(())
+        test_withdraw::handler(_ctx)
     }
 }
 

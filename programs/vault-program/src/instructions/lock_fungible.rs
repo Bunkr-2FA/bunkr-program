@@ -50,9 +50,7 @@ pub fn handler(ctx: Context<LockFungible>, amount: u64) -> Result<()> {
     let cpi_program = ctx.accounts.token_program.to_account_info();
     let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
 
-    // just pass raw_amount directly else you cant lock 0.01 WBTC
-    let raw_amount = amount * (10_usize.pow(ctx.accounts.token_mint.decimals as u32)) as u64;
-    anchor_spl::token::transfer(cpi_context, raw_amount)?;
+    anchor_spl::token::transfer(cpi_context, amount)?;
 
 
     

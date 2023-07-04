@@ -6,7 +6,7 @@ use {
 #[account()]
 pub struct Bunkr {
     pub raw_id: Vec<u8>,
-    pub public_key: [u8; 32],
+    pub public_key: [u8; 64],
     pub withdraw_address: Pubkey,
     pub current_reset_hash: [u8; 32],
     pub final_reset_hash: [u8; 32],

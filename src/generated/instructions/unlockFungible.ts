@@ -42,6 +42,7 @@ export const unlockFungibleStruct = new beet.BeetArgsStruct<
  * @property [] withdrawalAddress
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
+ * @property [_writable_, **signer**] authenticationWallet
  * @property [] associatedTokenProgram
  * @category Instructions
  * @category UnlockFungible
@@ -54,6 +55,7 @@ export type UnlockFungibleInstructionAccounts = {
   withdrawalAddress: web3.PublicKey
   signer: web3.PublicKey
   bunkr: web3.PublicKey
+  authenticationWallet: web3.PublicKey
   tokenProgram?: web3.PublicKey
   rent?: web3.PublicKey
   systemProgram?: web3.PublicKey
@@ -114,6 +116,11 @@ export function createUnlockFungibleInstruction(
       pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
+    },
+    {
+      pubkey: accounts.authenticationWallet,
+      isWritable: true,
+      isSigner: true,
     },
     {
       pubkey: accounts.tokenProgram ?? splToken.TOKEN_PROGRAM_ID,

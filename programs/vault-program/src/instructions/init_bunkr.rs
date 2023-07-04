@@ -21,10 +21,7 @@ pub struct InitBunkr<'info> {
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct InitBunkrData {
     raw_id: Vec<u8>,
-    public_key: [u8; 32],
-    withdraw_address: Pubkey,
-    current_reset_hash: [u8; 32],
-    final_reset_hash: [u8; 32],
+    public_key: [u8; 64]
 
 }
 
@@ -35,10 +32,6 @@ pub fn handler(ctx: Context<InitBunkr>, init_bunkr_data: InitBunkrData) -> Resul
     bunkr.raw_id = data.raw_id;
     bunkr.public_key = data.public_key;
     bunkr.withdraw_address = ctx.accounts.signer.key();
-    bunkr.current_reset_hash = data.current_reset_hash;
-    bunkr.final_reset_hash = data.final_reset_hash;
-
-
 
     Ok(())
 }

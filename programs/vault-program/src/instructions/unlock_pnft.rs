@@ -51,6 +51,9 @@ pub struct UnlockPNFT<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Box<Account<'info, Bunkr>>,
 
+    #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    pub authentication_wallet: Signer<'info>,
+
     pub token_program: Program<'info, Token>,
     /// CHECK intstruction will fail if wrong program is supplied
     pub token_metadata_program: AccountInfo<'info>,

@@ -5,15 +5,10 @@
  * See: https://github.com/metaplex-foundation/solita
  */
 
-import * as web3 from '@solana/web3.js'
 import * as beet from '@metaplex-foundation/beet'
-import * as beetSolana from '@metaplex-foundation/beet-solana'
 export type InitBunkrData = {
   rawId: Uint8Array
-  publicKey: number[] /* size: 32 */
-  withdrawAddress: web3.PublicKey
-  currentResetHash: number[] /* size: 32 */
-  finalResetHash: number[] /* size: 32 */
+  publicKey: number[] /* size: 64 */
 }
 
 /**
@@ -23,10 +18,7 @@ export type InitBunkrData = {
 export const initBunkrDataBeet = new beet.FixableBeetArgsStruct<InitBunkrData>(
   [
     ['rawId', beet.bytes],
-    ['publicKey', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['withdrawAddress', beetSolana.publicKey],
-    ['currentResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
-    ['finalResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
+    ['publicKey', beet.uniformFixedSizeArray(beet.u8, 64)],
   ],
   'InitBunkrData'
 )

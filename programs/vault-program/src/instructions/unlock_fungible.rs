@@ -32,6 +32,9 @@ pub struct UnlockFungible<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Account<'info, Bunkr>,
 
+    #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    pub authentication_wallet: Signer<'info>,
+
     token_program: Program<'info, Token>,
     rent: Sysvar<'info, Rent>,
     system_program: Program<'info, System>,
@@ -61,9 +64,7 @@ pub fn handler(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
     let cpi_program = ctx.accounts.token_program.to_account_info();
     let cpi_context = CpiContext::new(cpi_program, cpi_accounts).with_signer(vault_seeds);
 
-    // just pass raw_amount, else you cant unlock btc
-    let raw_amount = amount * (10_usize.pow(ctx.accounts.token_mint.decimals as u32)) as u64;
-    anchor_spl::token::transfer(cpi_context, raw_amount)?;
+    anchor_spl::token::transfer(cpi_context, amount)?;
 
     Ok(())
 }

@@ -30,6 +30,7 @@ export const thawNonFungibleStruct = new beet.BeetArgsStruct<{
  * @property [] withdrawalAddress
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
+ * @property [_writable_, **signer**] authenticationWallet
  * @property [] tokenMetadataProgram
  * @property [] associatedTokenProgram
  * @category Instructions
@@ -44,6 +45,7 @@ export type ThawNonFungibleInstructionAccounts = {
   withdrawalAddress: web3.PublicKey
   signer: web3.PublicKey
   bunkr: web3.PublicKey
+  authenticationWallet: web3.PublicKey
   tokenProgram?: web3.PublicKey
   tokenMetadataProgram: web3.PublicKey
   systemProgram?: web3.PublicKey
@@ -105,6 +107,11 @@ export function createThawNonFungibleInstruction(
       pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
+    },
+    {
+      pubkey: accounts.authenticationWallet,
+      isWritable: true,
+      isSigner: true,
     },
     {
       pubkey: accounts.tokenProgram ?? splToken.TOKEN_PROGRAM_ID,

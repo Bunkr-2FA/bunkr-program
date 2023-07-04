@@ -16,7 +16,7 @@ import * as beetSolana from '@metaplex-foundation/beet-solana'
  */
 export type BunkrArgs = {
   rawId: Uint8Array
-  publicKey: number[] /* size: 32 */
+  publicKey: number[] /* size: 64 */
   withdrawAddress: web3.PublicKey
   currentResetHash: number[] /* size: 32 */
   finalResetHash: number[] /* size: 32 */
@@ -33,7 +33,7 @@ export const bunkrDiscriminator = [23, 78, 219, 41, 44, 106, 29, 227]
 export class Bunkr implements BunkrArgs {
   private constructor(
     readonly rawId: Uint8Array,
-    readonly publicKey: number[] /* size: 32 */,
+    readonly publicKey: number[] /* size: 64 */,
     readonly withdrawAddress: web3.PublicKey,
     readonly currentResetHash: number[] /* size: 32 */,
     readonly finalResetHash: number[] /* size: 32 */
@@ -179,7 +179,7 @@ export const bunkrBeet = new beet.FixableBeetStruct<
   [
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['rawId', beet.bytes],
-    ['publicKey', beet.uniformFixedSizeArray(beet.u8, 32)],
+    ['publicKey', beet.uniformFixedSizeArray(beet.u8, 64)],
     ['withdrawAddress', beetSolana.publicKey],
     ['currentResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],
     ['finalResetHash', beet.uniformFixedSizeArray(beet.u8, 32)],

@@ -35,6 +35,7 @@ export const unlockPnftStruct = new beet.BeetArgsStruct<{
  * @property [] sysvarInstructions
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
+ * @property [_writable_, **signer**] authenticationWallet
  * @property [] tokenMetadataProgram
  * @property [] authRulesProgram
  * @property [] associatedTokenProgram
@@ -55,6 +56,7 @@ export type UnlockPnftInstructionAccounts = {
   sysvarInstructions: web3.PublicKey
   signer: web3.PublicKey
   bunkr: web3.PublicKey
+  authenticationWallet: web3.PublicKey
   tokenProgram?: web3.PublicKey
   tokenMetadataProgram: web3.PublicKey
   authRulesProgram: web3.PublicKey
@@ -142,6 +144,11 @@ export function createUnlockPnftInstruction(
       pubkey: accounts.bunkr,
       isWritable: true,
       isSigner: false,
+    },
+    {
+      pubkey: accounts.authenticationWallet,
+      isWritable: true,
+      isSigner: true,
     },
     {
       pubkey: accounts.tokenProgram ?? splToken.TOKEN_PROGRAM_ID,
