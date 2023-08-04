@@ -1,4 +1,5 @@
-use anchor_lang::system_program::{Transfer, transfer};
+use anchor_lang::{system_program::{Transfer, transfer}, solana_program::program::invoke};
+use spl_memo::{id, build_memo};
 
 use {
     crate::{states::*, constants::*, errors::ErrorCode},
@@ -14,20 +15,13 @@ pub struct TestWithdraw<'info> {
     #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
     pub authentication_wallet: Signer<'info>,
     pub system_program: Program<'info, System>,
+    pub memo_program: Program<'info, Memo>,
 }
 
 
 pub fn handler(ctx: Context<TestWithdraw>) -> Result<()> {
 
-    let cpi_context = CpiContext::new(
-        ctx.accounts.system_program.to_account_info(),
-        Transfer {
-            from: ctx.accounts.bunkr.to_account_info(),
-            to: ctx.accounts.signer.to_account_info(),
-        },
-    );
-
-    transfer(cpi_context, 10000000)?;
-
-Ok(())
+    let memo_ix = build_memo("Bunkr: Empty Demo Unlock".to_string().as_bytes(), &[]);
+    invoke(&memo_ix, &[ctx.accounts.signer.to_account_info()])?;
+    Ok(())
 }

@@ -1,6 +1,6 @@
 use {
     anchor_lang::{prelude::*, solana_program::hash::Hash},
-    crate::{constants::*, errors::ErrorCode}
+    crate::{constants::*, errors::ErrorCode},
 };
 
 #[account()]
@@ -19,4 +19,13 @@ pub fn validate_password(on_chain_password: [u8; 32], password: &[u8; 32]) -> Re
     assert!(on_chain_password == password_to_check.to_bytes(), "Password Mismatch");
     Ok(())
 }
+
+pub struct Memo;
+
+impl anchor_lang::Id for Memo {
+    fn id() -> Pubkey {
+        spl_memo::ID
+    }
+}
+
 

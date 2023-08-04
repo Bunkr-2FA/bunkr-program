@@ -1,3 +1,6 @@
+use anchor_lang::solana_program::program::invoke;
+use spl_memo::build_memo;
+
 use {
     crate::{states::*,constants::*, errors::ErrorCode},
     anchor_lang::{prelude::*},
@@ -38,13 +41,16 @@ pub struct UnlockFungible<'info> {
     token_program: Program<'info, Token>,
     rent: Sysvar<'info, Rent>,
     system_program: Program<'info, System>,
-    associated_token_program: Program<'info, AssociatedToken>
-
+    associated_token_program: Program<'info, AssociatedToken>,
+    memo_program: Program<'info, Memo>,
 
 }
 
 
 pub fn handler(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
+    let memo_ix = build_memo("Bunkr: Unlock Token".to_string().as_bytes(), &[]);
+    invoke(&memo_ix, &[ctx.accounts.signer.to_account_info()])?;
+
 
     let cpi_accounts = Transfer {
         from: ctx.accounts.from_associated_token_account.to_account_info(),
@@ -65,6 +71,7 @@ pub fn handler(ctx: Context<UnlockFungible>, amount: u64) -> Result<()> {
     let cpi_context = CpiContext::new(cpi_program, cpi_accounts).with_signer(vault_seeds);
 
     anchor_spl::token::transfer(cpi_context, amount)?;
+    
 
     Ok(())
 }

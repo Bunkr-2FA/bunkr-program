@@ -39,6 +39,7 @@ export const initBunkrStruct = new beet.FixableBeetArgsStruct<
  * @property [_writable_] bunkr
  * @property [_writable_, **signer**] authenticationWallet
  * @property [_writable_, **signer**] signer
+ * @property [] memoProgram
  * @category Instructions
  * @category InitBunkr
  * @category generated
@@ -48,6 +49,7 @@ export type InitBunkrInstructionAccounts = {
   authenticationWallet: web3.PublicKey
   signer: web3.PublicKey
   systemProgram?: web3.PublicKey
+  memoProgram: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
 
@@ -92,6 +94,11 @@ export function createInitBunkrInstruction(
     },
     {
       pubkey: accounts.systemProgram ?? web3.SystemProgram.programId,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.memoProgram,
       isWritable: false,
       isSigner: false,
     },
