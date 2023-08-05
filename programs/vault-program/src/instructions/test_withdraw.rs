@@ -12,7 +12,7 @@ pub struct TestWithdraw<'info> {
     pub bunkr: Account<'info, Bunkr>,
     #[account(mut)]
     pub signer: Signer<'info>,
-    #[account(mut, address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    #[account(address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
     pub authentication_wallet: Signer<'info>,
     pub system_program: Program<'info, System>,
     pub memo_program: Program<'info, Memo>,

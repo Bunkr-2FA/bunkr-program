@@ -38,7 +38,7 @@ pub struct ThawNonFungible<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Box<Account<'info, Bunkr>>,
 
-    #[account(mut, address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    #[account(address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
     pub authentication_wallet: Signer<'info>,
 
     token_program: Program<'info, Token>,
