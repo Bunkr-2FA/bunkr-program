@@ -108,7 +108,7 @@
 
 "@project-serum/anchor@^0.26.0":
   version "0.26.0"
-  resolved "https://registry.npmjs.org/@project-serum/anchor/-/anchor-0.26.0.tgz"
+  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.26.0.tgz#99e15a3923a5d10514f8185b2d3909e5699d60d5"
   integrity sha512-Nq+COIjE1135T7qfnOHEn7E0q39bQTgXLFk837/rgFe6Hkew9WML7eHsS+lSYD2p3OJaTiUOHTAq1lHy36oIqQ==
   dependencies:
     "@coral-xyz/borsh" "^0.26.0"

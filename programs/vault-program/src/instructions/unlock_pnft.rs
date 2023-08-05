@@ -6,13 +6,13 @@ use {
         solana_program::instruction::Instruction
     },
     mpl_token_metadata::instruction::{MetadataInstruction, DelegateArgs, RevokeArgs, UnlockArgs, TransferArgs},
-    anchor_spl::{token::{Mint, Token, TokenAccount}},
-    anchor_spl::associated_token::{AssociatedToken}
+    anchor_spl::token::{Mint, Token, TokenAccount},
+    anchor_spl::associated_token::AssociatedToken
 };
 
 #[derive(Accounts)]
 pub struct UnlockPNFT<'info> {
-    #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
+    #[account(address = bunkr.withdraw_address)]
     pub withdrawal_address: SystemAccount<'info>,
 
     #[account(
@@ -51,7 +51,7 @@ pub struct UnlockPNFT<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Box<Account<'info, Bunkr>>,
 
-    #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    #[account(mut, address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
     pub authentication_wallet: Signer<'info>,
 
     pub token_program: Program<'info, Token>,

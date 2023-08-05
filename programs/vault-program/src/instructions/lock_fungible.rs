@@ -3,9 +3,9 @@ use spl_memo::build_memo;
 
 use {
     crate::{states::*, constants::*, errors::ErrorCode,},
-    anchor_lang::{prelude::*},
-    anchor_spl::{token::{Mint, Token, TokenAccount, Transfer}},
-    anchor_spl::associated_token::{AssociatedToken}
+    anchor_lang::prelude::*,
+    anchor_spl::token::{Mint, Token, TokenAccount, Transfer},
+    anchor_spl::associated_token::AssociatedToken
 };
 
 
@@ -57,8 +57,6 @@ pub fn handler(ctx: Context<LockFungible>, amount: u64) -> Result<()> {
     let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
 
     anchor_spl::token::transfer(cpi_context, amount)?;
-
-
     
     Ok(())
 }

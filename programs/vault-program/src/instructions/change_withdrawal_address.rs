@@ -1,10 +1,7 @@
-use anchor_lang::context;
-
 use {
     crate::{constants::*, errors::ErrorCode, states::*},
     anchor_lang::prelude::*,
 };
-
 
 #[derive(Accounts)]
 pub struct ChangeWithdrawalAddress<'info> {
@@ -17,7 +14,6 @@ pub struct ChangeWithdrawalAddress<'info> {
 }
 
 pub fn handler(ctx: Context<ChangeWithdrawalAddress>) -> Result<()> {
-    
     let bunkr = &mut ctx.accounts.bunkr;
     let new_withdrawal_address = ctx.accounts.new_withdrawal_address.key();
     bunkr.withdraw_address = new_withdrawal_address;

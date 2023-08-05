@@ -1,14 +1,11 @@
 use anchor_spl::metadata::Metadata;
 
-
 use {
     crate::{states::*, constants::*, errors::ErrorCode,},
     anchor_lang::{prelude::*,solana_program::program::invoke_signed},
-    mpl_token_metadata::instruction::{freeze_delegated_account},
-    anchor_spl::{token::{Mint, Token, TokenAccount, Approve, approve}}
+    mpl_token_metadata::instruction::freeze_delegated_account,
+    anchor_spl::token::{Mint, Token, TokenAccount, Approve, approve}
 };
-
-
 
 #[derive(Accounts)]
 pub struct FreezeNonFungible<'info> {

@@ -37,7 +37,7 @@ export const initBunkrStruct = new beet.FixableBeetArgsStruct<
  * Accounts required by the _initBunkr_ instruction
  *
  * @property [_writable_] bunkr
- * @property [_writable_, **signer**] authenticationWallet
+ * @property [**signer**] authenticationWallet
  * @property [_writable_, **signer**] signer
  * @property [] memoProgram
  * @category Instructions
@@ -84,7 +84,7 @@ export function createInitBunkrInstruction(
     },
     {
       pubkey: accounts.authenticationWallet,
-      isWritable: true,
+      isWritable: false,
       isSigner: true,
     },
     {

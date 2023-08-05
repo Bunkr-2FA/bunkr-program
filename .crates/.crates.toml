@@ -1,2 +1,2 @@
 [v1]
-"anchor-cli 0.27.0 (registry+https://github.com/rust-lang/crates.io-index)" = ["anchor"]
+"anchor-cli 0.28.0 (--git https://github.com/coral-xyz/anchor/tree/master/cli)" = ["anchor"]

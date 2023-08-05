@@ -1,21 +1,18 @@
-use {crate::instructions::*, crate::states::*, anchor_lang::prelude::*};
+use {crate::instructions::*, anchor_lang::prelude::*};
 
 pub mod constants;
 pub mod errors;
 pub mod instructions;
 pub mod states;
 
-
 declare_id!("BunKrGBXdGxyTLjvE44eQXDuKY7TyHZfPu9bj2Ugk5j2");
 
 #[program]
 pub mod vault_program {
 
-    use crate::states::Bunkr;
-
     use super::*;
 
-    pub fn init_bunkr(ctx: Context<InitBunkr> , init_bunkr_data: InitBunkrData ) -> Result<()> {
+    pub fn init_bunkr(ctx: Context<InitBunkr>, init_bunkr_data: InitBunkrData) -> Result<()> {
         init_bunkr::handler(ctx, init_bunkr_data)
     }
 
@@ -55,10 +52,3 @@ pub mod vault_program {
         test_withdraw::handler(_ctx)
     }
 }
-
-
-
-
-
-
-

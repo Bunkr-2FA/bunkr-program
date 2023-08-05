@@ -3,7 +3,7 @@ use anchor_spl::token::Transfer;
 use {
     crate::{states::*, constants::*, errors::ErrorCode,},
     anchor_lang::{prelude::*,solana_program::program::invoke_signed},
-    mpl_token_metadata::instruction::{thaw_delegated_account},
+    mpl_token_metadata::instruction::thaw_delegated_account,
     anchor_spl::{token::{Mint, Token, TokenAccount, Revoke, revoke,}, associated_token::AssociatedToken, metadata::Metadata}
 };
 
@@ -29,7 +29,7 @@ pub struct ThawNonFungible<'info> {
     )]
     pub withdrawal_token_account: Account<'info, TokenAccount>,
 
-    #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
+    #[account(address = bunkr.withdraw_address)]
     pub withdrawal_address: SystemAccount<'info>,
 
     #[account(mut)]
@@ -38,18 +38,14 @@ pub struct ThawNonFungible<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Box<Account<'info, Bunkr>>,
 
-    #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    #[account(mut, address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
     pub authentication_wallet: Signer<'info>,
 
     token_program: Program<'info, Token>,
     token_metadata_program: Program<'info, Metadata>,
     system_program: Program<'info, System>,
     associated_token_program: Program<'info, AssociatedToken>,
-
 }
-
-
-
 
 
 pub fn handler(ctx: Context<ThawNonFungible>) -> Result<()> {

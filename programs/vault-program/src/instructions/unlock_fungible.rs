@@ -3,11 +3,10 @@ use spl_memo::build_memo;
 
 use {
     crate::{states::*,constants::*, errors::ErrorCode},
-    anchor_lang::{prelude::*},
-    anchor_spl::{token::{Mint, Token, TokenAccount, Transfer}},
-    anchor_spl::associated_token::{AssociatedToken}
+    anchor_lang::prelude::*,
+    anchor_spl::token::{Mint, Token, TokenAccount, Transfer},
+    anchor_spl::associated_token::AssociatedToken
 };
-
 
 #[derive(Accounts)]
 pub struct UnlockFungible<'info> {
@@ -27,7 +26,7 @@ pub struct UnlockFungible<'info> {
     )]
     pub to_associated_token_account: Account<'info, TokenAccount>,
     
-    #[account(constraint = withdrawal_address.key() == bunkr.withdraw_address)]
+    #[account(address = bunkr.withdraw_address)]
     pub withdrawal_address: SystemAccount<'info>,
     #[account(mut)]
     signer: Signer<'info>,
@@ -35,7 +34,7 @@ pub struct UnlockFungible<'info> {
     #[account(mut, seeds=[b"bunkr", signer.key().as_ref()], bump)]
     pub bunkr: Account<'info, Bunkr>,
 
-    #[account(mut, constraint = authentication_wallet.key() == AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
+    #[account(mut, address = AUTHENTICATION_WALLET.parse::<Pubkey>().unwrap())]
     pub authentication_wallet: Signer<'info>,
 
     token_program: Program<'info, Token>,

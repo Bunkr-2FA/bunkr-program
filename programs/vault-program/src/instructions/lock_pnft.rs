@@ -6,7 +6,7 @@ use {
         solana_program::instruction::Instruction
     },
     mpl_token_metadata::instruction::{MetadataInstruction, DelegateArgs, LockArgs},
-    anchor_spl::{token::{Mint, Token, TokenAccount}}
+    anchor_spl::token::{Mint, Token, TokenAccount}
 };
 
 #[derive(Accounts)]
