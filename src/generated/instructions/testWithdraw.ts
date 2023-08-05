@@ -24,7 +24,7 @@ export const testWithdrawStruct = new beet.BeetArgsStruct<{
  *
  * @property [_writable_] bunkr
  * @property [_writable_, **signer**] signer
- * @property [_writable_, **signer**] authenticationWallet
+ * @property [**signer**] authenticationWallet
  * @property [] memoProgram
  * @category Instructions
  * @category TestWithdraw
@@ -71,7 +71,7 @@ export function createTestWithdrawInstruction(
     },
     {
       pubkey: accounts.authenticationWallet,
-      isWritable: true,
+      isWritable: false,
       isSigner: true,
     },
     {

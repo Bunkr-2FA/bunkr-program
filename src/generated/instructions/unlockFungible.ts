@@ -42,7 +42,7 @@ export const unlockFungibleStruct = new beet.BeetArgsStruct<
  * @property [] withdrawalAddress
  * @property [_writable_, **signer**] signer
  * @property [_writable_] bunkr
- * @property [_writable_, **signer**] authenticationWallet
+ * @property [**signer**] authenticationWallet
  * @property [] associatedTokenProgram
  * @property [] memoProgram
  * @category Instructions
@@ -121,7 +121,7 @@ export function createUnlockFungibleInstruction(
     },
     {
       pubkey: accounts.authenticationWallet,
-      isWritable: true,
+      isWritable: false,
       isSigner: true,
     },
     {
